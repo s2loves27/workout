@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<font-family xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="UnusedAttribute,ResourceCycle">
+
+<!--    light  -->
+    <font
+        android:font="@font/ddangs_light"
+        android:fontStyle="normal"
+        android:fontWeight="300"
+        app:font="@font/ddangs_light"
+        app:fontStyle="normal"
+        app:fontWeight="300">
+
+    </font>
+
+    <font
+        android:font="@font/ddangs_medium"
+        android:fontStyle="normal"
+        android:fontWeight="500"
+        app:font="@font/ddangs_medium"
+        app:fontStyle="normal"
+        app:fontWeight="500">
+
+    </font>
+
+    <font
+        android:font="@font/ddangs_bold"
+        android:fontStyle="normal"
+        android:fontWeight="1000"
+        app:font="@font/ddangs_bold"
+        app:fontStyle="normal"
+        app:fontWeight="1000">
+
+    </font>
+
+
+
+</font-family>
