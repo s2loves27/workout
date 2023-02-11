@@ -12,7 +12,7 @@
         android:theme="@style/Theme.Workout"
         tools:targetApi="31">
         <activity
-            android:name=".activaty.MainActivity"
+            android:name=".activaties.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
