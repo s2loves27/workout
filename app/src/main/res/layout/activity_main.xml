@@ -72,6 +72,102 @@
             android:layout_weight="11"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="당월 총 운동 시간:"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2시간 10분"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="전월 동기간 운동 시간:"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="2시간 10분"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="horizontal"
+                android:layout_marginBottom="15dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="전월 총 운동 시간:"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="30시간 15분"
+                    android:textSize="15sp"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:textColor="@color/black">
+                </TextView>
+
+
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -158,6 +254,7 @@
                     android:textStyle="bold"
                     android:fontFamily="@font/ddangs_medium"/>
             </LinearLayout>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"

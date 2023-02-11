@@ -12,6 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.workout.R;
 import com.example.workout.adapters.CalendarAdapter;
@@ -22,7 +23,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
     // 년월 텍스트 뷰
     TextView monthYearText;
@@ -32,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     RecyclerView recyclerView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             selectedDate = LocalDate.now();
         }
-
+        setMonthView();
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +92,15 @@ public class MainActivity extends AppCompatActivity {
         }
         return formatter;
     }
+    private String yearMonthFromDate(LocalDate date) {
+        String formatter = "";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            formatter = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월"));
+
+        }
+        return formatter;
+    }
+
 
     private ArrayList<String> daysInMonthArray(LocalDate date) {
         ArrayList<String> dayList = new ArrayList<>();
@@ -127,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<String> dayList = daysInMonthArray(selectedDate);
 
-        CalendarAdapter adapter = new CalendarAdapter(dayList);
+        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
 
         //레이아웃 설정 (열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
@@ -135,5 +147,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(String dayText) {
+        String yearMonDay = yearMonthFromDate(selectedDate) + " " + dayText + "일";
+        Toast.makeText(this, yearMonDay, Toast.LENGTH_SHORT).show();
     }
 }
