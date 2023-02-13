@@ -11,4 +11,10 @@
     <color name="sat_color">#FF0067A3</color>
     <color name="sun_color">#FFFF0088</color>
 
+    <color name="sameMonthColor">#E6E6E6</color>
+    <color name="sameDayColor">#FFFFFF</color>
+
+    <color name="diffMonthColor">#A5A5A5</color>
+
+
 </resources>

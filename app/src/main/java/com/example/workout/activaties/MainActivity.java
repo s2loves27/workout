@@ -18,22 +18,23 @@ import com.example.workout.R;
 import com.example.workout.adapters.CalendarAdapter;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
+import com.example.workout.utils.CalendarUtil;
+
+public class MainActivity extends AppCompatActivity {
 
     // 년월 텍스트 뷰
     TextView monthYearText;
 
-    // 년월 변수
-    LocalDate selectedDate;
-
 
     RecyclerView recyclerView;
-
 
 
     @Override
@@ -46,26 +47,27 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         Objects.requireNonNull(getSupportActionBar()).hide();
 
 
-
-
-
-        //초기화
+        //xml 초기화
         monthYearText = findViewById(R.id.monthYearText);
         ImageButton preBtn = findViewById(R.id.pre_btn);
         ImageButton nextBtn = findViewById(R.id.next_btn);
         recyclerView = findViewById(R.id.recyclerView);
 
 
-        //현재 날짜
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            selectedDate = LocalDate.now();
-        }
+        //변수 초기화
+        CalendarUtil.selectedDate = Calendar.getInstance();
+
+
+//        //현재 날짜
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CalendarUtil.selectedDate = LocalDate.now();
+//        }
         setMonthView();
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    selectedDate = selectedDate.minusMonths(1);
+                    CalendarUtil.selectedDate.add(Calendar.MONTH, -1);
                 }
                 setMonthView();
             }
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    selectedDate = selectedDate.plusMonths(1);
+                    CalendarUtil.selectedDate.add(Calendar.MONTH, 1);
+
                 }
                 setMonthView();
             }
@@ -84,62 +87,59 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     }
 
-    private String monthYearFromDate(LocalDate date) {
-        String formatter = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formatter = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월"));
+    private String monthYearFromDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
 
-        }
-        return formatter;
-    }
-    private String yearMonthFromDate(LocalDate date) {
-        String formatter = "";
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            formatter = date.format(DateTimeFormatter.ofPattern("yyyy년 MM월"));
+        String monthYear = month + "월 " + year;
 
-        }
-        return formatter;
+        return monthYear;
     }
 
+    private String yearMonthFromDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
 
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> dayList = new ArrayList<>();
+        String yearMonth = year + "년 " + month + "월";
+        return yearMonth;
+    }
 
 
-        int lastDay = 0;
-        int dayOfWeek = 1;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            YearMonth yearMonth = YearMonth.from(date);
+    private ArrayList<Date> daysInMonthArray() {
+        ArrayList<Date> dayList = new ArrayList<>();
 
-            //해당 월 마지막 날짜 가져오기(예: 28,29,30,31)
-            lastDay = yearMonth.lengthOfMonth();
+        Calendar monthCalendar = (Calendar) CalendarUtil.selectedDate.clone();
 
-            //해당 월의 첫번째 날 가져오기(예: 4월 1일)
-            LocalDate firstDay = selectedDate.withDayOfMonth(1);
+        //1일로 세팅
+        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
 
-            //첫번째 날 요일 가져오기(월 1, 일:7)
-            dayOfWeek = firstDay.getDayOfWeek().getValue();
+        //요일 가져와서 -1 일요일:1, 월요일:2
+        int firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK) -1;
+
+        //날짜 세팅(-5일전)
+        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth);
+
+        //42전 까지 반복
+        while(dayList.size() < 42) {
+
+            //리스트에 날짜 등록
+            dayList.add(monthCalendar.getTime());
+
+            //1일씩 늘린 날짜로 변경 1일->2일->3일
+            monthCalendar.add(Calendar.DAY_OF_MONTH,1);
+
         }
 
-
-        for (int i = 1; i < 42; i++) {
-            if (i <= dayOfWeek || i > lastDay + dayOfWeek) {
-                dayList.add("");
-
-            } else {
-                dayList.add(String.valueOf(i - dayOfWeek));
-            }
-        }
         return dayList;
     }
 
 
     private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
+        monthYearText.setText(yearMonthFromDate(CalendarUtil.selectedDate));
 
-        ArrayList<String> dayList = daysInMonthArray(selectedDate);
+        ArrayList<Date> dayList = daysInMonthArray();
 
-        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
+        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext());
 
         //레이아웃 설정 (열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
@@ -147,11 +147,5 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         recyclerView.setLayoutManager(manager);
 
         recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(String dayText) {
-        String yearMonDay = yearMonthFromDate(selectedDate) + " " + dayText + "일";
-        Toast.makeText(this, yearMonDay, Toast.LENGTH_SHORT).show();
     }
 }

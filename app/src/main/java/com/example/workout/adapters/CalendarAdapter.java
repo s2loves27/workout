@@ -2,33 +2,39 @@ package com.example.workout.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workout.R;
+import com.example.workout.utils.CalendarUtil;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import kotlin.reflect.KParameter;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
-    ArrayList<String> dayList;
+    ArrayList<Date> dayList;
 
-    OnItemListener onItemListener;
+
 
     Context context;
 
-    public CalendarAdapter(ArrayList<String> dayList, Context context, OnItemListener onitemListener){
+    public CalendarAdapter(ArrayList<Date> dayList, Context context){
         this.dayList = dayList;
         this.context = context;
-        this.onItemListener = onitemListener;
     }
 
     @NonNull
@@ -42,11 +48,44 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CalendarAdapter.CalendarViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
+        //날짜 변수에 담기
+        Date monthDate = dayList.get(position);
 
-        String day = dayList.get(position);
+        //달력 초기화
+        Calendar dateCalendar = Calendar.getInstance();
 
-        holder.dayText.setText(day);
+
+        dateCalendar.setTime(monthDate);
+
+
+
+        //현재 년 월
+        int currentDay = CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = CalendarUtil.selectedDate.get(Calendar.MONTH) + 1;
+        int currentYear = CalendarUtil.selectedDate.get(Calendar.YEAR);
+
+        //넘어온 데이터
+        int displayDay = dateCalendar.get(Calendar.DAY_OF_MONTH);
+        int displayMonth = dateCalendar.get(Calendar.MONTH) + 1;
+        int displayYear = dateCalendar.get(Calendar.YEAR);
+
+        if(displayMonth == currentMonth && displayYear == currentYear){
+            if(currentDay == displayDay){
+                holder.parentView.setBackgroundColor(ContextCompat.getColor(context, R.color.sameDayColor));
+
+            }else {
+                holder.parentView.setBackgroundColor(ContextCompat.getColor(context, R.color.sameMonthColor));
+            }
+        }else{
+            holder.parentView.setBackgroundColor(ContextCompat.getColor(context, R.color.diffMonthColor));
+        }
+
+        //날짜 변수에 담기
+        int dayNo = dateCalendar.get(Calendar.DAY_OF_MONTH);
+
+        holder.dayText.setText(String.valueOf(dayNo));
+
 
         if((position + 1) % 7 == 0 ){
             holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.sat_color));
@@ -56,7 +95,11 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onItemListener.onItemClick(day);
+                long time =  monthDate.getTime();
+
+                String vearMonDay = time + "";
+
+                Toast.makeText(context, vearMonDay, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -68,17 +111,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     class CalendarViewHolder extends RecyclerView.ViewHolder{
         TextView dayText;
+        LinearLayout parentView;
 
         public CalendarViewHolder(View itemView){
             super(itemView);
 
             dayText = itemView.findViewById(R.id.dayText);
+            parentView = itemView.findViewById(R.id.parentView);
 
         }
-    }
-
-    public interface OnItemListener {
-
-        void onItemClick(String dayText);
     }
 }
