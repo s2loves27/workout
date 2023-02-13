@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">workout</string>
+
+    <string name="txt_select_time_insert_title">시간 입력 방법을 선택해주세요</string>
+    <string name="txt_select_time_insert_timer">타이머</string>
+    <string name="txt_select_time_insert_input">직접입력</string>
+
 </resources>

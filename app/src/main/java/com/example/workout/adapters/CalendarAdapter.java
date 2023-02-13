@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workout.R;
+import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.utils.CalendarUtil;
 
 import java.time.LocalDate;
@@ -24,6 +25,7 @@ import java.util.Date;
 
 import kotlin.reflect.KParameter;
 
+
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
     ArrayList<Date> dayList;
@@ -32,9 +34,14 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     Context context;
 
-    public CalendarAdapter(ArrayList<Date> dayList, Context context){
+    private SelectTimerInsertDialog selectTimerInsertDialog;
+
+    OnItemListener onItemListener;
+
+    public CalendarAdapter(ArrayList<Date> dayList, Context context, OnItemListener onItemListener){
         this.dayList = dayList;
         this.context = context;
+        this.onItemListener = onItemListener;
     }
 
     @NonNull
@@ -100,6 +107,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
                 String vearMonDay = time + "";
 
                 Toast.makeText(context, vearMonDay, Toast.LENGTH_SHORT).show();
+
+                onItemListener.onItemClick(monthDate);
             }
         });
     }
@@ -120,5 +129,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             parentView = itemView.findViewById(R.id.parentView);
 
         }
+    }
+
+    public interface OnItemListener{
+        void onItemClick(Date date);
     }
 }

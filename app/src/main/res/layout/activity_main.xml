@@ -42,11 +42,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="3"
+                android:fontFamily="@font/ddangs_bold"
                 android:text="2023년 1월"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="25sp"
-                android:fontFamily="@font/ddangs_bold"
 
 
                 ></TextView>
@@ -77,70 +77,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="당월 총 운동 시간:"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/ddangs_bold"
-                    android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2시간 10분"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/ddangs_bold"
-                    android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="전월 동기간 운동 시간:"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/ddangs_bold"
-                    android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="2시간 10분"
-                    android:textSize="15sp"
-                    android:fontFamily="@font/ddangs_bold"
-                    android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
-
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
                 android:orientation="horizontal"
                 android:layout_marginBottom="15dp">
 
@@ -148,24 +84,23 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="전월 총 운동 시간:"
-                    android:textSize="15sp"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:text="운동중"
+                    android:textColor="@color/black"
+                    android:textSize="25sp"></TextView>
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="30시간 15분"
-                    android:textSize="15sp"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:textColor="@color/black">
-                </TextView>
+                    android:text="xx분 xx초"
+                    android:textColor="@color/black"
+                    android:textSize="25sp">
 
+                </TextView>
 
 
             </LinearLayout>
@@ -173,87 +108,175 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:layout_weight="0"
-                android:layout_marginBottom="10dp">
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="당월 총 운동 시간:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="2시간 10분"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="전월 동기간 운동 시간:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="2시간 10분"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_weight="0"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="전월 총 운동 시간:"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_bold"
+                    android:gravity="center"
+                    android:text="30시간 15분"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"></TextView>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="0"
+                android:orientation="horizontal">
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="SUN"
                     android:textAlignment="center"
                     android:textColor="@color/sun_color"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="MON"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="TUE"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="WED"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="THU"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="FRI"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:fontFamily="@font/ddangs_medium"
                     android:text="SAT"
                     android:textAlignment="center"
                     android:textColor="@color/sat_color"
                     android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/ddangs_medium"/>
+                    android:textStyle="bold" />
             </LinearLayout>
 
 
@@ -261,8 +284,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
 
         </LinearLayout>

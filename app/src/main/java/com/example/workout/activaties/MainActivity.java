@@ -26,9 +26,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
+import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.utils.CalendarUtil;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
     // 년월 텍스트 뷰
     TextView monthYearText;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
-
+    private SelectTimerInsertDialog selectTimerInsertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +85,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        selectTimerInsertDialog = new SelectTimerInsertDialog(this, new SelectTimerInsertDialog.SelectTimerInsertDialogClickListener() {
+            @Override
+            public void onTimerClick() {
+
+            }
+
+            @Override
+            public void onInputClick() {
+
+            }
+        });
+
 
     }
 
@@ -102,6 +115,17 @@ public class MainActivity extends AppCompatActivity {
 
         String yearMonth = year + "년 " + month + "월";
         return yearMonth;
+    }
+
+    private String yearMonthDayFromDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+
+        String yearMonthDay = year + "년 " + month + "월 " + day + "일";
+
+        return yearMonthDay;
     }
 
 
@@ -139,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
         ArrayList<Date> dayList = daysInMonthArray();
 
-        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext());
+        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
 
         //레이아웃 설정 (열 7개)
         RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
@@ -147,5 +171,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
 
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void onItemClick(Date date) {
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(date);
+
+        selectTimerInsertDialog.show();
+
+        selectTimerInsertDialog.setDate(yearMonthDayFromDate(calendar));
+
     }
 }
