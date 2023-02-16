@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,8 +28,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.TimerTask;
 
 import com.example.workout.dialogs.SelectTimerInsertDialog;
+import com.example.workout.services.TimerService;
 import com.example.workout.utils.CalendarUtil;
 
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
@@ -36,6 +41,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
     RecyclerView recyclerView;
+
+    TextView btnTimer;
+    TextView txtTimer;
+
+    private Handler handler;
+
 
     private SelectTimerInsertDialog selectTimerInsertDialog;
     @Override
@@ -53,10 +64,16 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         ImageButton preBtn = findViewById(R.id.pre_btn);
         ImageButton nextBtn = findViewById(R.id.next_btn);
         recyclerView = findViewById(R.id.recyclerView);
+        btnTimer = findViewById(R.id.btn_timer);
+        txtTimer = findViewById(R.id.txt_timer);
 
 
         //변수 초기화
         CalendarUtil.selectedDate = Calendar.getInstance();
+
+        if(handler == null){
+            handler = new Handler(Looper.getMainLooper());
+        }
 
 
 //        //현재 날짜
@@ -85,6 +102,30 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             }
         });
 
+        btnTimer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(btnTimer.getText().equals(getString(R.string.txt_select_time_insert_timer_start))) {
+                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
+                    intent.putExtra("command", "startTime");
+                    intent.putExtra("name", "123");
+                    startService(intent);
+                    btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
+                    handler.postDelayed(runnable, 100);
+                }else if(btnTimer.getText().equals(getString(R.string.txt_select_time_insert_timer_end))){
+                    //서비스
+                    btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
+                    txtTimer.setText("0분 0초");
+                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
+                    intent.putExtra("command", "endTime");
+                    intent.putExtra("name", "123");
+                    startService(intent);
+                    handler.removeMessages(0);
+                }
+            }
+        });
+
         selectTimerInsertDialog = new SelectTimerInsertDialog(this, new SelectTimerInsertDialog.SelectTimerInsertDialogClickListener() {
             @Override
             public void onTimerClick() {
@@ -99,6 +140,18 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
     }
+
+    private final Runnable runnable = new Runnable(){
+
+        @Override
+        public void run() {
+
+//            CalendarUtil.exerciseTimeModel.getmMin()
+            txtTimer.setText(CalendarUtil.exerciseTimeModel.getmMin() + "분 " +  CalendarUtil.exerciseTimeModel.getmSec() + "초");
+
+            handler.postDelayed(runnable, 100);
+        }
+    };
 
     private String monthYearFromDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
