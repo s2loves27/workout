@@ -75,6 +75,8 @@
         android:textSize="25sp"></TextView>
 
     <androidx.constraintlayout.utils.widget.ImageFilterView
+        android:id="@+id/txt_pre_kakao_sign_up"
+
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
