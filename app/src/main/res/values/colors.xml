@@ -17,4 +17,32 @@
     <color name="diffMonthColor">#A5A5A5</color>
 
 
+    <!--    회색 -->
+    <color name="gray0">#FFFFFF</color>
+    <color name="gray1">#FAFAFA</color>
+    <color name="gray2">#F5F5F5</color>
+    <color name="gray3">#E8E8E8</color>
+    <color name="gray4">#DCDCDC</color>
+    <color name="gray5">#BEBEBE</color>
+    <color name="gray6">#919191</color>
+    <color name="gray7">#737373</color>
+    <color name="gray8">#414141</color>
+    <color name="gray9">#121212</color>
+    <color name="gray10">#000000</color>
+    <!--    BLUE-->
+    <color name="pb1">#F0F5FF</color>
+    <color name="pb2">#96B4E4</color>
+    <color name="pb3">#5B67EF</color>
+    <color name="pb4">#5578F0</color>
+    <color name="pb5">#052878</color>
+    <!--PUPLE-->
+    <color name="Mpuple1">#F2F5FC</color>
+    <color name="Mpuple2">#CED1FB</color>
+    <color name="Mpuple3">#A7AEF6</color>
+    <color name="Mpuple4">#A0A6EA</color>
+    <color name="Mpuple5">#838DB1</color>
+    <color name="Mpuplelogo">#7064B8</color>
+    <color name="Mpuple6">#272051</color>
+
+
 </resources>
