@@ -1,6 +1,9 @@
 plugins {
     id 'com.android.application'
 }
+//Properties 선언 및 키값을 불러옴
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     namespace 'com.example.workout'
@@ -14,6 +17,8 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField  "String", "KAKAO_API_KEY", properties['kakao_api_kay']
     }
 
     buildTypes {
@@ -36,7 +41,7 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
@@ -53,4 +58,14 @@ dependencies {
 //    implementation "com.kakao.sdk:v2-share:2.12.1" // 메시지(카카오톡 공유)
 //    implementation "com.kakao.sdk:v2-navi:2.12.1" // 카카오내비
 //    implementation "com.kakao.sdk:v2-friend:2.12.1" // 카카오톡 소셜 피커, 리소스 번들 파일 포함
+
+
+    //Retrofit 라이브러리
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+
 }

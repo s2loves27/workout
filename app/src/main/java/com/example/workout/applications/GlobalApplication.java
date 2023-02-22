@@ -3,6 +3,7 @@ package com.example.workout.applications;
 
 import android.app.Application;
 
+import com.example.workout.BuildConfig;
 import com.kakao.sdk.common.KakaoSdk;
 
 public class GlobalApplication extends Application {
@@ -14,6 +15,6 @@ public class GlobalApplication extends Application {
         instance = this;
 
         // 네이티브 앱 키로 초기화
-        KakaoSdk.init(this, "{네이티브 앱키}");
+        KakaoSdk.init(this, BuildConfig.KAKAO_API_KEY);
     }
 }

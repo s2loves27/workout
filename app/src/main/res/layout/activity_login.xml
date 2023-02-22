@@ -116,10 +116,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:layout_marginBottom="40dp"
+        >
 
         <TextView
-            android:id="@+id/txt_pre_sign_in"
+            android:id="@+id/txt_login_sign_in"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginLeft="30dp"
@@ -147,12 +149,12 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_gravity="end"
-            android:layout_marginBottom="40dp"
             android:layout_weight="1"
 
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
             android:includeFontPadding="false"
+            android:layout_marginBottom="10dp"
 
             android:minWidth="0dp"
             android:minHeight="0dp"
@@ -166,6 +168,16 @@
             android:fontFamily="@font/ddangs_light"
 
             />
+
+        <ImageView
+            android:id="@+id/iv_login_kako"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:src="@drawable/kakao_login_large_wide"
+            >
+
+        </ImageView>
 
     </LinearLayout>
 
