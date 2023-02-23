@@ -7,6 +7,8 @@ public class ServiceGenerator {
     private static final Retrofit.Builder sRetrofitBuilder = new Retrofit.Builder();
 
     private ServiceGenerator() {
+
+
     }
 
 
