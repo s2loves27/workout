@@ -31,6 +31,9 @@ import java.util.Objects;
 import java.util.TimerTask;
 
 import com.example.workout.dialogs.SelectTimerInsertDialog;
+import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.restapi.ServerApiService;
+import com.example.workout.restapi.ServiceGenerator;
 import com.example.workout.services.TimerService;
 import com.example.workout.utils.CalendarUtil;
 
@@ -49,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
     private SelectTimerInsertDialog selectTimerInsertDialog;
+
+    PreferenceHelper preferenceHelper;
+    ServerApiService serverApiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         if(handler == null){
             handler = new Handler(Looper.getMainLooper());
         }
+
+        preferenceHelper = new PreferenceHelper(getApplicationContext());
+
+        serverApiService = ServiceGenerator.createService(ServerApiService.class, preferenceHelper.getToken());
 
 
 //        //현재 날짜

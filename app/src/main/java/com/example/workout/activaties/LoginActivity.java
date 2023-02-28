@@ -7,14 +7,21 @@ import android.content.pm.Signature;
 import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.workout.R;
+import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.models.TokenModel;
+import com.example.workout.models.UserModel;
+import com.example.workout.restapi.ServerApiService;
+import com.example.workout.restapi.ServiceGenerator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
@@ -25,11 +32,16 @@ import androidx.constraintlayout.utils.widget.ImageFilterView;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
+import java.util.regex.Pattern;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     TextView txtLoginSignIn;
-    Button btnLoginJoin;
+    TextView txtLoginJoin;
     ImageView ivLoginKako;
 
     CheckBox chk_login_status;
@@ -37,6 +49,40 @@ public class LoginActivity extends AppCompatActivity {
     TextInputEditText loginEditEmail;
     TextInputEditText loginEditPassword;
 
+    PreferenceHelper preferenceHelper;
+    ServerApiService serverApiService;
+
+    private final Callback<TokenModel> loginCall = new Callback<TokenModel>() {
+        @Override
+        public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
+            if (response.isSuccessful()) {
+                TokenModel result = response.body();
+                if (result != null) {
+                    int code = result.getCode();
+                    if(code == 1) {
+
+                        Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                        preferenceHelper.setToken(result.getAccess());
+
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<TokenModel> call, Throwable t) {
+            Toast.makeText(LoginActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
 
 
     @Override
@@ -46,14 +92,27 @@ public class LoginActivity extends AppCompatActivity {
 
         Log.d("KeyHash", getKeyHash());
 
-        txtLoginSignIn = findViewById(R.id.txt_login_sign_in);
-        btnLoginJoin = findViewById(R.id.btn_login_join);
-        ivLoginKako = findViewById(R.id.iv_login_kako);
-
-        chk_login_status = findViewById(R.id.chk_login_status);
-
         loginEditEmail = findViewById(R.id.login_edit_email);
         loginEditPassword = findViewById(R.id.login_edit_password);
+        chk_login_status = findViewById(R.id.chk_login_status);
+
+
+        txtLoginSignIn = findViewById(R.id.txt_login_sign_in);
+        txtLoginJoin = findViewById(R.id.txt_login_join);
+        ivLoginKako = findViewById(R.id.iv_login_kako);
+
+        preferenceHelper = new PreferenceHelper(getApplicationContext());
+        serverApiService = ServiceGenerator.createService(ServerApiService.class, "");
+
+        if(chk_login_status.isChecked()){
+            loginEditEmail.setText(preferenceHelper.getEmail());
+        }else{
+            loginEditEmail.setText("");
+
+        }
+
+
+
 
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
@@ -63,16 +122,38 @@ public class LoginActivity extends AppCompatActivity {
         txtLoginSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Pattern emailPattern = Patterns.EMAIL_ADDRESS;
+
+                String email = loginEditEmail.getText().toString();
+                String password = loginEditPassword.getText().toString();
+
+
+                if(email.equals("")){
+                    Toast.makeText(getApplicationContext(), "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!emailPattern.matcher(email).matches()){
+                    Toast.makeText(getApplicationContext(), "이메일 형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(password.equals("")){
+                    Toast.makeText(getApplicationContext(), "패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                }
+
+                serverApiService.login(email, password).enqueue(loginCall);
+
+
+
 
             }
         });
 
-        btnLoginJoin.setOnClickListener(new View.OnClickListener() {
+        txtLoginJoin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), JoinActivity.class);
                 startActivity(intent);
-                finish();
             }
         });
 

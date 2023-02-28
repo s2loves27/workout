@@ -11,4 +11,7 @@
     <string name="txt_pre_sign_up">회원가입</string>
     <string name="txt_pre_sign_in">로그인</string>
 
+    <string name="txt_error_internet">인터넷 연결 오류</string>
+
+
 </resources>

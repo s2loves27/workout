@@ -125,6 +125,37 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="성별"
+                    android:textColor="#000000"
+                    android:textSize="7pt"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/ddangs_bold"
+                    ></TextView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
+
+                    <RadioButton
+                        android:id="@+id/rb_man"
+                        android:text="남성"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+
+                    <RadioButton
+                        android:id="@+id/rb_woman"
+                        android:text="여성"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text="비밀번호"
                     android:textColor="#000000"
                     android:textSize="7pt"
@@ -276,12 +307,13 @@
                     android:layout_gravity="end"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="20dp"
-
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
+
                     android:minWidth="0dp"
                     android:minHeight="0dp"
 
+                    android:background="@color/gray6"
                     android:text="회원가입하기"
                     android:textColor="@color/Mpuple6"
                     android:textSize="13pt"
