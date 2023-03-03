@@ -75,6 +75,8 @@ public class JoinActivity extends AppCompatActivity {
 
                 }
 
+            } else if(response.code() == 400){
+                Toast.makeText(getApplicationContext(), "잘못된 값이 입력 되었습니다. 확인해주세요.", Toast.LENGTH_SHORT).show();
             } else{
                 Toast.makeText(getApplicationContext(), "회원 가입이 되지 않았습니다. 확인해주세요.", Toast.LENGTH_SHORT).show();
             }
@@ -87,7 +89,6 @@ public class JoinActivity extends AppCompatActivity {
             Toast.makeText(JoinActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
 //            Util.dbInset(getApplicationContext(), t);
-
         }
     };
     @Override

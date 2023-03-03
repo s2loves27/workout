@@ -90,6 +90,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            CalendarUtil.selectedDate = LocalDate.now();
 //        }
+
+
         setMonthView();
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,12 +241,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     @Override
     public void onItemClick(Date date) {
         Calendar calendar = Calendar.getInstance();
-
         calendar.setTime(date);
 
         selectTimerInsertDialog.show();
-
         selectTimerInsertDialog.setDate(yearMonthDayFromDate(calendar));
-
     }
 }

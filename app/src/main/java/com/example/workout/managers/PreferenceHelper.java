@@ -8,8 +8,11 @@ public class PreferenceHelper {
 
 
     private static final String USER_PREFERENCES = "com.example.workout";
-
     private static final String TOKEN = "com.example.workout.token";
+    private static final String REFRESH = "com.example.workout.refresh";
+
+
+    private static final String LOGIN_METHOD =  "com.example.workout.login.method";
 
     private static final String EMAIL = "com.example.workout.email";
 
@@ -47,5 +50,28 @@ public class PreferenceHelper {
 
     public String getToken() {
         return getSharedPreferences(this.mContext).getString(TOKEN, "");
+    }
+
+    public void setRefresh(String refresh) {
+        Editor editor = getEditor(this.mContext);
+        editor.putString(REFRESH, refresh);
+        editor.apply();
+    }
+
+    public String getRefresh() {
+        return getSharedPreferences(this.mContext).getString(REFRESH, "");
+    }
+
+
+
+
+    public void setLoginMethod(String loginMethod) {
+        Editor editor = getEditor(this.mContext);
+        editor.putString(LOGIN_METHOD, loginMethod);
+        editor.apply();
+    }
+
+    public String getLoginMethod() {
+        return getSharedPreferences(this.mContext).getString(LOGIN_METHOD, "");
     }
 }
