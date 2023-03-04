@@ -26,6 +26,8 @@ import com.example.workout.restapi.ServiceGenerator;
 import com.google.android.material.textfield.TextInputEditText;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
+import com.kakao.sdk.user.model.AgeRange;
+import com.kakao.sdk.user.model.Gender;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.utils.widget.ImageFilterView;
@@ -242,7 +244,7 @@ public class LoginActivity extends AppCompatActivity {
     public void kakaoLogin(){
         UserApiClient.getInstance().loginWithKakaoTalk(LoginActivity.this, ((oAuthToken, throwable) -> {
             if(throwable != null){
-                Log.e("TEST", "kakakoTalk로그인 실패");
+                Log.e("TEST", "kakakoTalk로그인 실패 \n" + throwable);
             }else{
                 Log.i("TEST", "로그인 성공(토큰)" + oAuthToken.getAccessToken());
 
@@ -287,11 +289,47 @@ public class LoginActivity extends AppCompatActivity {
 
                 serverApiService.checkUser(user.getKakaoAccount().getEmail()).enqueue(checkTokenCall);
 
-                user.getKakaoAccount().getBirthyear();
-                user.getKakaoAccount().getEmail();
-                user.getKakaoAccount().getAgeRange();
-                user.getKakaoAccount().getGender();
-                user.getKakaoAccount().getName();
+                String birthYear = user.getKakaoAccount().getBirthyear();
+                String email = user.getKakaoAccount().getEmail();
+
+                String ageRange;
+
+                if(user.getKakaoAccount().getAgeRange() == null){
+                    ageRange = "";
+                }else{
+                    ageRange = user.getKakaoAccount().getAgeRange().toString();
+                }
+
+                String gender;
+                if(user.getKakaoAccount().getGender() == null){
+                    gender = "";
+                }else{
+                    gender = user.getKakaoAccount().getGender().toString();
+                }
+
+                String Name = user.getKakaoAccount().getName();
+
+                Log.i("TEST", "birthYear : " + birthYear);
+                Log.i("TEST", "email : " + email);
+                Log.i("TEST", "ageRange : " + ageRange);
+                Log.i("TEST", "gender : " + gender);
+                Log.i("TEST", "Name : " + Name);
+
+
+                Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+
+                intent.putExtra("birthYear", birthYear);
+                intent.putExtra("email", email);
+                intent.putExtra("ageRange", ageRange);
+                intent.putExtra("gender", gender);
+                intent.putExtra("Name", Name);
+
+
+
+                startActivity(intent);
+
+
+
 
 
 

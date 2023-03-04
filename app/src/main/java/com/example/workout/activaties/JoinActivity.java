@@ -1,6 +1,7 @@
 package com.example.workout.activaties;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
@@ -114,11 +115,21 @@ public class JoinActivity extends AppCompatActivity {
         btn_join = findViewById(R.id.btn_join);
 
 
-        btnJoinDatePicker.setText(result);
+//        btnJoinDatePicker.setText(result);
 
         serverApiService = ServiceGenerator.createService(ServerApiService.class, "");
 
 //        selectedDateStr = result;
+
+        Intent intent = getIntent();
+
+        String birthYear = intent.getStringExtra("birthYear");
+        String email = intent.getStringExtra("email");
+        String ageRange = intent.getStringExtra("ageRange");
+        String gender = intent.getStringExtra("gender");
+        String Name = intent.getStringExtra("Name");
+
+        preSetItem(birthYear, email, ageRange, gender, Name);
 
         btnJoinDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -231,6 +242,12 @@ public class JoinActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void preSetItem(String birthYear,String email,String ageRange,String gender,String Name){
+        if(birthYear != null){
+
+        }
     }
 
     private void showDateDialog(){
