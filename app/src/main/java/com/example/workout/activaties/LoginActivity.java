@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.workout.R;
 import com.example.workout.managers.PreferenceHelper;
 import com.example.workout.models.CheckUserModel;
+import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.models.UserModel;
 import com.example.workout.restapi.ServerApiService;
@@ -55,38 +56,66 @@ public class LoginActivity extends AppCompatActivity {
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
 
-    private final Callback<CheckUserModel> checkTokenCall = new Callback<CheckUserModel>() {
+    
+    // 카카오 로그인 값
+    String birthYear; 
+    String birthDay;
+    String email;
+    String ageRange;
+    String gender;
+    String name;
+    
+    private final Callback<TokenModel> kakaoLogin = new Callback<TokenModel>() {
         @Override
-        public void onResponse(Call<CheckUserModel> call, Response<CheckUserModel> response) {
+        public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
             if (response.isSuccessful()) {
-                CheckUserModel result = response.body();
+                TokenModel result = response.body();
                 if (result != null) {
                     int code = result.getCode();
                     if(code == 1) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+
+                        preferenceHelper.setToken(result.getAccess());
+                        preferenceHelper.setRefresh(result.getRefresh());
+
                         startActivity(intent);
                         finish();
+                        return;
                     }
                 }
             }else if(response.code() == 400){
-                CheckUserModel result = response.body();
+                TokenModel result = response.body();
                 if(result != null){
-                    Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), result.getMessage() + response.code(), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "400 통신 에러" + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }else if(response.code() == 500){
-                Toast.makeText(getApplicationContext(), "회원이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "회원이 존재하지 않습니다." + response.code(), Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "서버 에러 " + response.code(), Toast.LENGTH_SHORT).show();
             }
+
+            Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
+
+            intent.putExtra("birthYear", birthYear);
+            intent.putExtra("birthYear", birthDay);
+            intent.putExtra("email", email);
+            intent.putExtra("ageRange", ageRange);
+            intent.putExtra("gender", gender);
+            intent.putExtra("name", name);
+
+            startActivity(intent);
+            finish();
+
+
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
 
         @Override
-        public void onFailure(Call<CheckUserModel> call, Throwable t) {
+        public void onFailure(Call<TokenModel> call, Throwable t) {
             Toast.makeText(LoginActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
             t.printStackTrace();
         }
@@ -106,7 +135,6 @@ public class LoginActivity extends AppCompatActivity {
 
                         preferenceHelper.setToken(result.getAccess());
                         preferenceHelper.setRefresh(result.getRefresh());
-                        preferenceHelper.setLoginMethod("JUN");
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -127,7 +155,6 @@ public class LoginActivity extends AppCompatActivity {
             else{
                 Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
             }
-//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -287,12 +314,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                serverApiService.checkUser(user.getKakaoAccount().getEmail()).enqueue(checkTokenCall);
 
-                String birthYear = user.getKakaoAccount().getBirthyear();
-                String email = user.getKakaoAccount().getEmail();
+                birthYear = user.getKakaoAccount().getBirthyear();
+                birthDay = user.getKakaoAccount().getBirthday();
 
-                String ageRange;
+                email = user.getKakaoAccount().getEmail();
+
+
 
                 if(user.getKakaoAccount().getAgeRange() == null){
                     ageRange = "";
@@ -300,33 +328,26 @@ public class LoginActivity extends AppCompatActivity {
                     ageRange = user.getKakaoAccount().getAgeRange().toString();
                 }
 
-                String gender;
                 if(user.getKakaoAccount().getGender() == null){
                     gender = "";
                 }else{
                     gender = user.getKakaoAccount().getGender().toString();
                 }
 
-                String Name = user.getKakaoAccount().getName();
+
+                name = user.getKakaoAccount().getName();
 
                 Log.i("TEST", "birthYear : " + birthYear);
                 Log.i("TEST", "email : " + email);
                 Log.i("TEST", "ageRange : " + ageRange);
                 Log.i("TEST", "gender : " + gender);
-                Log.i("TEST", "Name : " + Name);
+                Log.i("TEST", "Name : " + name);
 
 
-                Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
-
-                intent.putExtra("birthYear", birthYear);
-                intent.putExtra("email", email);
-                intent.putExtra("ageRange", ageRange);
-                intent.putExtra("gender", gender);
-                intent.putExtra("Name", Name);
+                serverApiService.kakaoLogin(user.getKakaoAccount().getEmail()).enqueue(kakaoLogin);
 
 
 
-                startActivity(intent);
 
 
 

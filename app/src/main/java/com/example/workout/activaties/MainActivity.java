@@ -13,7 +13,9 @@ import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +29,22 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 import java.util.TimerTask;
 
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.models.ExerciseAreaModel;
+import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
 import com.example.workout.services.TimerService;
 import com.example.workout.utils.CalendarUtil;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements CalendarAdapter.OnItemListener {
 
@@ -48,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     TextView btnTimer;
     TextView txtTimer;
 
+    Spinner spinner;
+
     private Handler handler;
 
 
@@ -55,6 +66,60 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
+
+    List<ExerciseAreaModel> spinnerItem;
+
+
+    private final Callback<List<ExerciseAreaModel>> exerciseAreaListCall = new Callback<List<ExerciseAreaModel>>() {
+        @Override
+        public void onResponse(Call<List<ExerciseAreaModel>> call, Response<List<ExerciseAreaModel>> response) {
+            if (response.isSuccessful()) {
+                List<ExerciseAreaModel> result = response.body();
+                if (result != null) {
+                    spinnerItem = result;
+                    ArrayList<String> strExerciseArea = new ArrayList<>();
+                    for (int i = 0; i < result.size(); i ++){
+                        ExerciseAreaModel exerciseAreaModel = result.get(i);
+                        strExerciseArea.add(exerciseAreaModel.getExercise_area_name());
+
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item_exercise_area, strExerciseArea);
+
+                    adapter.setDropDownViewResource(R.layout.spinner_item_exercise_area);
+
+                    spinner.setAdapter(adapter);
+
+
+
+
+//                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, item);
+
+
+                }
+            }else if(response.code() == 400){
+                List<ExerciseAreaModel> result = response.body();
+                if(result != null){
+                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<List<ExerciseAreaModel>> call, Throwable t) {
+            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +138,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         btnTimer = findViewById(R.id.btn_timer);
         txtTimer = findViewById(R.id.txt_timer);
 
+        spinner = findViewById(R.id.spinner);
+
 
         //변수 초기화
         CalendarUtil.selectedDate = Calendar.getInstance();
@@ -85,6 +152,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         serverApiService = ServiceGenerator.createService(ServerApiService.class, preferenceHelper.getToken());
 
+
+        serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
 
 //        //현재 날짜
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -119,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             public void onClick(View view) {
 
                 if(btnTimer.getText().equals(getString(R.string.txt_select_time_insert_timer_start))) {
+
+
+
                     Intent intent = new Intent(getApplicationContext(), TimerService.class);
                     intent.putExtra("command", "startTime");
                     intent.putExtra("name", "123");

@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.workout.R;
+import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.models.TokenModel;
 import com.example.workout.models.UserModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
@@ -53,9 +55,15 @@ public class JoinActivity extends AppCompatActivity {
     String selectedDateStr = "";
 
     ServerApiService serverApiService;
+    PreferenceHelper preferenceHelper;
     Date curDate = new Date(); // 현재
     final SimpleDateFormat dataFormat = new SimpleDateFormat("yyyy-MM-dd");
     String result = dataFormat.format(curDate);
+
+    String password;
+
+
+
 
     private final Callback<UserModel> registerCallback = new Callback<UserModel>() {
         @Override
@@ -68,6 +76,9 @@ public class JoinActivity extends AppCompatActivity {
                     if(code == 1) {
 
                         Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
+                        serverApiService.kakaoLogin(result.getEmail()).enqueue(kakaoLoginCall);
+
+
                         finish();
                     }else{
                         Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
@@ -92,6 +103,49 @@ public class JoinActivity extends AppCompatActivity {
 //            Util.dbInset(getApplicationContext(), t);
         }
     };
+    private final Callback<TokenModel> kakaoLoginCall = new Callback<TokenModel>() {
+        @Override
+        public void onResponse(Call<TokenModel> call, Response<TokenModel> response) {
+            if (response.isSuccessful()) {
+                TokenModel result = response.body();
+                if (result != null) {
+                    int code = result.getCode();
+                    if(code == 1) {
+
+                        Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+
+                        preferenceHelper.setToken(result.getAccess());
+                        preferenceHelper.setRefresh(result.getRefresh());
+
+                        Intent intent = new Intent(JoinActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }else{
+                        Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }else if(response.code() == 400){
+                TokenModel result = response.body();
+                if(result != null){
+                    Toast.makeText(getApplicationContext(), result.getMessage() + response.code(), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "400 통신 에러" + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "서버 에러." + response.code(), Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<TokenModel> call, Throwable t) {
+            Toast.makeText(JoinActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +168,7 @@ public class JoinActivity extends AppCompatActivity {
         cb_join_agree_3  = findViewById(R.id.cb_join_agree_3);
         btn_join = findViewById(R.id.btn_join);
 
+        preferenceHelper = new PreferenceHelper(getApplicationContext());
 
 //        btnJoinDatePicker.setText(result);
 
@@ -124,12 +179,14 @@ public class JoinActivity extends AppCompatActivity {
         Intent intent = getIntent();
 
         String birthYear = intent.getStringExtra("birthYear");
+        String birthDay = intent.getStringExtra("birthDay");
+
         String email = intent.getStringExtra("email");
         String ageRange = intent.getStringExtra("ageRange");
         String gender = intent.getStringExtra("gender");
-        String Name = intent.getStringExtra("Name");
+        String name = intent.getStringExtra("name");
 
-        preSetItem(birthYear, email, ageRange, gender, Name);
+        preSetItem(birthYear, birthDay, email, ageRange, gender, name);
 
         btnJoinDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -194,7 +251,7 @@ public class JoinActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                String password = et_join_password.getText().toString();
+                password = et_join_password.getText().toString();
                 if(password.equals("")){
                     Toast.makeText(getApplicationContext(), "패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show();
                     return;
@@ -244,16 +301,41 @@ public class JoinActivity extends AppCompatActivity {
 
     }
 
-    private void preSetItem(String birthYear,String email,String ageRange,String gender,String Name){
+    private void preSetItem(String birthYear, String birthDay , String email,String ageRange,String gender,String name){
         if(birthYear != null){
 
         }
+        if(birthDay != null){
+
+        }
+        if(email != null){
+            et_join_email.setText(email);
+        }
+        if(ageRange != null){
+
+        }
+        if(gender != null){
+            if(gender.equals("MALE")){
+                rb_man.setChecked(true);
+            }else{
+                rb_woman.setChecked(true);
+            }
+        }
+        if(name != null){
+
+        }
+
+
     }
 
     private void showDateDialog(){
         Calendar calendar = Calendar.getInstance();
         try {
-            curDate = dataFormat.parse(btnJoinDatePicker.getText().toString());
+            if(btnJoinDatePicker.getText().toString().equals("클릭해주세요.")){
+                curDate = dataFormat.parse(result);
+            }else{
+                curDate = dataFormat.parse(btnJoinDatePicker.getText().toString());
+            }
 
         } catch (ParseException e) {
             throw new RuntimeException(e);

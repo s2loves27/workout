@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.workout.R;
 import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.models.CheckUserModel;
 import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
@@ -21,6 +22,65 @@ import retrofit2.Response;
 
 public class SplashActivity extends AppCompatActivity {
 
+
+    private final Callback<CheckUserModel> checkUserCall = new Callback<CheckUserModel>() {
+        @Override
+        public void onResponse(Call<CheckUserModel> call, Response<CheckUserModel> response) {
+            if (response.isSuccessful()) {
+                CheckUserModel result = response.body();
+                if (result != null) {
+                    int code = result.getCode();
+                    if(code == 1) {
+                        UserApiClient.getInstance().accessTokenInfo((accessTokenInfo, throwable) -> {
+                            if (throwable != null) {
+                                Toast.makeText(SplashActivity.this, "토큰 정보 보기 실패: " + throwable, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+                                startActivity(intent);
+                                finish();
+
+
+                            } else if (accessTokenInfo != null) {
+                                Toast.makeText(SplashActivity.this, "카카오 로그인 성공: ", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(SplashActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                            return null;
+                        });
+                        return;
+                    }
+                }
+            }else if(response.code() == 400){
+                CheckUserModel result = response.body();
+                if(result != null){
+                    Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                }
+            }else if(response.code() == 500){
+                Toast.makeText(getApplicationContext(), "회원이 존재하지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+
+
+            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+
+
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<CheckUserModel> call, Throwable t) {
+            Toast.makeText(SplashActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
 
     private final Callback<TokenCheckModel> TokenRefreshCall = new Callback<TokenCheckModel>() {
         @Override
@@ -97,35 +157,8 @@ public class SplashActivity extends AppCompatActivity {
 
         preferenceHelper = new PreferenceHelper(getApplicationContext());
         serverApiService = ServiceGenerator.createService(ServerApiService.class, "");
+        serverApiService.tokenCheck(preferenceHelper.getToken()).enqueue(TokenCheckCall);
 
-
-        if (preferenceHelper.getLoginMethod().equals("JUN")) {
-            serverApiService.tokenCheck(preferenceHelper.getToken()).enqueue(TokenCheckCall);
-        } else if (preferenceHelper.getLoginMethod().equals("KAKAO")) {
-
-
-            UserApiClient.getInstance().accessTokenInfo((accessTokenInfo, throwable) -> {
-                if (throwable != null) {
-                    Toast.makeText(SplashActivity.this, "토큰 정보 보기 실패: " + throwable, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                    finish();
-
-
-                } else if (accessTokenInfo != null) {
-                    Toast.makeText(SplashActivity.this, "카카오 로그인 성공: ", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(SplashActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
-                return null;
-            });
-
-        } else {
-            Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
     }
 }
