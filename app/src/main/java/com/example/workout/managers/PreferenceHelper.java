@@ -10,6 +10,7 @@ public class PreferenceHelper {
     private static final String USER_PREFERENCES = "com.example.workout";
     private static final String TOKEN = "com.example.workout.token";
     private static final String REFRESH = "com.example.workout.refresh";
+    private static final String USER_ID = "com.example.workout.user_id";
 
 
     private static final String LOGIN_METHOD =  "com.example.workout.login.method";
@@ -60,6 +61,16 @@ public class PreferenceHelper {
 
     public String getRefresh() {
         return getSharedPreferences(this.mContext).getString(REFRESH, "");
+    }
+
+    public void setUserId(String userId) {
+        Editor editor = getEditor(this.mContext);
+        editor.putString(REFRESH, userId);
+        editor.apply();
+    }
+
+    public String getUserId() {
+        return getSharedPreferences(this.mContext).getString(USER_ID, "");
     }
 
 

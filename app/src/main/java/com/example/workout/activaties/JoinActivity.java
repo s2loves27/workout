@@ -116,6 +116,7 @@ public class JoinActivity extends AppCompatActivity {
 
                         preferenceHelper.setToken(result.getAccess());
                         preferenceHelper.setRefresh(result.getRefresh());
+                        preferenceHelper.setUserId(result.getUser());
 
                         Intent intent = new Intent(JoinActivity.this, MainActivity.class);
                         startActivity(intent);

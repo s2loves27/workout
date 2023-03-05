@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimerTask;
@@ -67,7 +68,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
 
-    List<ExerciseAreaModel> spinnerItem;
+
+    HashMap<String, String> exerciseArea;
 
 
     private final Callback<List<ExerciseAreaModel>> exerciseAreaListCall = new Callback<List<ExerciseAreaModel>>() {
@@ -76,12 +78,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 List<ExerciseAreaModel> result = response.body();
                 if (result != null) {
-                    spinnerItem = result;
+                    exerciseArea = new HashMap<>();
                     ArrayList<String> strExerciseArea = new ArrayList<>();
                     for (int i = 0; i < result.size(); i ++){
                         ExerciseAreaModel exerciseAreaModel = result.get(i);
                         strExerciseArea.add(exerciseAreaModel.getExercise_area_name());
-
+                        exerciseArea.put(exerciseAreaModel.getExercise_area_name(), exerciseAreaModel.getExercise_id());
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item_exercise_area, strExerciseArea);

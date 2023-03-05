@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         preferenceHelper.setToken(result.getAccess());
                         preferenceHelper.setRefresh(result.getRefresh());
+                        preferenceHelper.setUserId(result.getUser());
 
                         startActivity(intent);
                         finish();
@@ -135,6 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         preferenceHelper.setToken(result.getAccess());
                         preferenceHelper.setRefresh(result.getRefresh());
+                        preferenceHelper.setUserId(result.getUser());
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -275,9 +277,8 @@ public class LoginActivity extends AppCompatActivity {
             }else{
                 Log.i("TEST", "로그인 성공(토큰)" + oAuthToken.getAccessToken());
 
-                preferenceHelper.setToken(oAuthToken.getAccessToken());
-                preferenceHelper.setRefresh(oAuthToken.getRefreshToken());
-                preferenceHelper.setLoginMethod("KAKAO");
+//                preferenceHelper.setToken(oAuthToken.getAccessToken());
+//                preferenceHelper.setRefresh(oAuthToken.getRefreshToken());
                 getUserInfo();
 
             }
@@ -291,9 +292,8 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("TEST", "kakaoAccount 로그인 실패");
             }else{
                 Log.i("TEST", "kakaoAccount 로그인 성공(토큰)" + oAuthToken.getAccessToken());
-                preferenceHelper.setToken(oAuthToken.getAccessToken());
-                preferenceHelper.setRefresh(oAuthToken.getRefreshToken());
-                preferenceHelper.setLoginMethod("KAKAO");
+//                preferenceHelper.setToken(oAuthToken.getAccessToken());
+//                preferenceHelper.setRefresh(oAuthToken.getRefreshToken());
                 getUserInfo();
             }
             return null;

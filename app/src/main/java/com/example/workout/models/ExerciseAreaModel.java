@@ -7,6 +7,9 @@ public class ExerciseAreaModel {
     @SerializedName("exercise_area_name")
     private String exercise_area_name;
 
+    @SerializedName("exercise_id")
+    private String exercise_id;
+
     @SerializedName("detail")
     private String detail;
 
@@ -20,6 +23,9 @@ public class ExerciseAreaModel {
         return exercise_area_name;
     }
 
+    public String getExercise_id() {
+        return exercise_id;
+    }
 
     public String getCode() {
         return code;
@@ -32,4 +38,6 @@ public class ExerciseAreaModel {
     public TokenMessageModel getMessages() {
         return messages;
     }
+
+
 }

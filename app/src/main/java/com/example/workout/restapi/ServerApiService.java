@@ -55,4 +55,6 @@ public interface ServerApiService {
     Call<List<ExerciseAreaModel>> exerciseArea();
 
 
+
+
 }
