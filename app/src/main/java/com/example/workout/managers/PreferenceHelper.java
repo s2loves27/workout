@@ -65,7 +65,7 @@ public class PreferenceHelper {
 
     public void setUserId(String userId) {
         Editor editor = getEditor(this.mContext);
-        editor.putString(REFRESH, userId);
+        editor.putString(USER_ID, userId);
         editor.apply();
     }
 

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.workout.R;
 import com.example.workout.adapters.CalendarAdapter;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Year;
 import java.time.YearMonth;
@@ -37,6 +38,7 @@ import java.util.TimerTask;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
 import com.example.workout.models.ExerciseAreaModel;
+import com.example.workout.models.ExerciseRecodeModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
@@ -70,6 +72,43 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
     HashMap<String, String> exerciseArea;
+
+
+    private final Callback<ExerciseRecodeModel> exerciseRecodeCall = new Callback<ExerciseRecodeModel>() {
+        @Override
+        public void onResponse(Call<ExerciseRecodeModel> call, Response<ExerciseRecodeModel> response) {
+            if (response.isSuccessful()) {
+                ExerciseRecodeModel result = response.body();
+                if (result != null) {
+
+                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
+                    intent.putExtra("command", "endTime");
+                    intent.putExtra("name", "123");
+                    startService(intent);
+                    handler.removeMessages(0);
+
+                }
+            }else if(response.code() == 400){
+                ExerciseRecodeModel result = response.body();
+                if(result != null){
+                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<ExerciseRecodeModel> call, Throwable t) {
+            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
 
 
     private final Callback<List<ExerciseAreaModel>> exerciseAreaListCall = new Callback<List<ExerciseAreaModel>>() {
@@ -203,11 +242,25 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     //서비스
                     btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
                     txtTimer.setText("0분 0초");
-                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
-                    intent.putExtra("command", "endTime");
-                    intent.putExtra("name", "123");
-                    startService(intent);
-                    handler.removeMessages(0);
+                    int mHour = CalendarUtil.exerciseTimeModel.getmHour();
+                    int mMin = CalendarUtil.exerciseTimeModel.getmMin();
+                    int mSec = CalendarUtil.exerciseTimeModel.getmSec();
+
+                    int time = mHour * 60 * 60 + mMin * 60 + mSec;
+
+
+                    long now = System.currentTimeMillis();
+                    Date date = new Date(now);
+
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    String getDate = sdf.format(date);
+
+
+
+
+                    serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String)spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
+
+
                 }
             }
         });

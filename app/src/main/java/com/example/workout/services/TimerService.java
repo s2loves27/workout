@@ -88,7 +88,9 @@ public class TimerService extends Service {
     }
 
     private void timerStop() {
+
         mTimer.cancel();
+
         CalendarUtil.exerciseTimeModel = new ExerciseTimeModel(0, 0, 0);
 
     }
