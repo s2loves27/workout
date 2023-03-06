@@ -80,12 +80,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 ExerciseRecodeModel result = response.body();
                 if (result != null) {
-
-                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
-                    intent.putExtra("command", "endTime");
-                    intent.putExtra("name", "123");
-                    startService(intent);
-                    handler.removeMessages(0);
+                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
 
                 }
             }else if(response.code() == 400){
@@ -259,6 +254,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
                     serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String)spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
+
+                    Intent intent = new Intent(getApplicationContext(), TimerService.class);
+                    intent.putExtra("command", "endTime");
+                    intent.putExtra("name", "123");
+                    startService(intent);
+                    handler.removeMessages(0);
 
 
                 }
