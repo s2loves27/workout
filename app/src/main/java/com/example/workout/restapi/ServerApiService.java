@@ -2,6 +2,7 @@ package com.example.workout.restapi;
 
 import com.example.workout.models.CheckUserModel;
 import com.example.workout.models.ExerciseAreaModel;
+import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.models.ExerciseRecodeModel;
 import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
@@ -63,6 +64,13 @@ public interface ServerApiService {
             @Field("exercise_recode_date") String exercise_recode_date,
             @Field("exercise_recode_time") int exercise_recode_time);
 
+    @FormUrlEncoded
+    @POST("v1/exercise/recode/list/")
+    Call<List<ExerciseRecodeListItemModel>> exerciseRecodeList(
+            @Field("exercise_user_id") String exercise_user_id,
+            @Field("start_date") String start_date,
+            @Field("end_date") String end_date
+            );
 
 
 

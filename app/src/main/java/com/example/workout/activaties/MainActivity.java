@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -37,13 +38,16 @@ import java.util.TimerTask;
 
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
+import com.example.workout.models.CalendarStructureModel;
 import com.example.workout.models.ExerciseAreaModel;
+import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.models.ExerciseRecodeModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
 import com.example.workout.services.TimerService;
 import com.example.workout.utils.CalendarUtil;
+import com.example.workout.utils.Util;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -70,13 +74,59 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
 
+//    ArrayList<Date>
+    ArrayList<CalendarStructureModel> dayList;
 
     HashMap<String, String> exerciseArea;
 
 
-    private final Callback<ExerciseRecodeModel> exerciseRecodeCall = new Callback<ExerciseRecodeModel>() {
+    private final Callback<List<ExerciseRecodeListItemModel>> exerciseRecodeListCall = new Callback<List<ExerciseRecodeListItemModel>>() {
         @Override
-        public void onResponse(Call<ExerciseRecodeModel> call, Response<ExerciseRecodeModel> response) {
+        public void onResponse(Call<List<ExerciseRecodeListItemModel>> call, Response<List<ExerciseRecodeListItemModel>> response) {
+            if (response.isSuccessful()) {
+                List<ExerciseRecodeListItemModel> result = response.body();
+                if (result != null) {
+//                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                    for(int i = 0 ; i < result.size(); i ++){
+                        CalendarStructureModel structureModel = new CalendarStructureModel();
+                        ExerciseRecodeListItemModel exerciseRecodeListItemModel = result.get(i);
+                        String exerciseAreaId = exerciseRecodeListItemModel.getExercise_area_id();
+                        String exerciseAreaName = exerciseRecodeListItemModel.getExercise_area_name();
+                        String exerciseRecodeDate = exerciseRecodeListItemModel.getExercies_recode_date();
+                        String exerciseUpdatedDate = exerciseRecodeListItemModel.getExercise_updated_date();
+                        int exerciseRecodeTime = exerciseRecodeListItemModel.getExercies_recode_time();
+
+//                        exerciseRecodeDate.equals()
+                    }
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+
+
+
+
+
+                }
+            }else if(response.code() == 400){
+//                List<ExerciseRecodeListItemModel> result = response.body();
+                    Toast.makeText(getApplicationContext(), "Token이 만료 되었습니다 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                    finish();
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<List<ExerciseRecodeListItemModel>> call, Throwable t) {
+            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
+
+    private final Callback<ExerciseRecodeModel> exerciseRecodeCall = new Callback<ExerciseRecodeModel>() {
+            @Override
+            public void onResponse(Call<ExerciseRecodeModel> call, Response<ExerciseRecodeModel> response) {
             if (response.isSuccessful()) {
                 ExerciseRecodeModel result = response.body();
                 if (result != null) {
@@ -134,13 +184,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
                 }
             }else if(response.code() == 400){
-                List<ExerciseAreaModel> result = response.body();
-                if(result != null){
-                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
-                }
+//                List<ExerciseAreaModel> result = response.body();
+
+                    Toast.makeText(getApplicationContext(), "Token이 만료 되었습니다 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                    finish();
+
             }
             else{
                 Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
@@ -180,6 +228,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         //변수 초기화
         CalendarUtil.selectedDate = Calendar.getInstance();
 
+
+        setMonthView();
+
+
         if(handler == null){
             handler = new Handler(Looper.getMainLooper());
         }
@@ -191,13 +243,20 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
 
-//        //현재 날짜
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            CalendarUtil.selectedDate = LocalDate.now();
-//        }
+        String dayOfFirstMonth = yearMonthDayFormDate( true);
+        String dayOfLastMonth = yearMonthDayFormDate(false);
+
+        Log.i("TEST" , "dayOfFirstMonth : " + dayOfFirstMonth);
+        Log.i("TEST" , "dayOfLastMonth : " + dayOfLastMonth);
 
 
-        setMonthView();
+
+        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
+
+
+
+
+
         preBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -322,8 +381,52 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     }
 
 
-    private ArrayList<Date> daysInMonthArray() {
-        ArrayList<Date> dayList = new ArrayList<>();
+
+
+
+    private String yearMonthDayFormDate(boolean flag) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String day = "";
+
+        if(flag) {
+            day = sdf.format(dayList.get(0).getDate());
+        }else{
+            day = sdf.format(dayList.get(dayList.size()-1).getDate());
+        }
+        return day;
+    }
+
+
+//    private ArrayList<Date> daysInMonthArray() {
+//        ArrayList<Date> dayList = new ArrayList<>();
+//
+//        Calendar monthCalendar = (Calendar) CalendarUtil.selectedDate.clone();
+//
+//        //1일로 세팅
+//        monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
+//
+//        //요일 가져와서 -1 일요일:1, 월요일:2
+//        int firstDayOfMonth = monthCalendar.get(Calendar.DAY_OF_WEEK) -1;
+//
+//        //날짜 세팅(-5일전)
+//        monthCalendar.add(Calendar.DAY_OF_MONTH, -firstDayOfMonth);
+//
+//        //42전 까지 반복
+//        while(dayList.size() < 42) {
+//
+//            //리스트에 날짜 등록
+//            dayList.add(monthCalendar.getTime());
+//
+//            //1일씩 늘린 날짜로 변경 1일->2일->3일
+//            monthCalendar.add(Calendar.DAY_OF_MONTH,1);
+//
+//        }
+//
+//        return dayList;
+//    }
+
+    private ArrayList<CalendarStructureModel> daysInMonthArray() {
+        dayList = new ArrayList<>();
 
         Calendar monthCalendar = (Calendar) CalendarUtil.selectedDate.clone();
 
@@ -338,23 +441,24 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         //42전 까지 반복
         while(dayList.size() < 42) {
+            CalendarStructureModel calendarStructureModel = new CalendarStructureModel();
 
+            calendarStructureModel.setDate(monthCalendar.getTime());
             //리스트에 날짜 등록
-            dayList.add(monthCalendar.getTime());
+            dayList.add(calendarStructureModel);
 
             //1일씩 늘린 날짜로 변경 1일->2일->3일
             monthCalendar.add(Calendar.DAY_OF_MONTH,1);
-
         }
-
         return dayList;
     }
+
 
 
     private void setMonthView() {
         monthYearText.setText(yearMonthFromDate(CalendarUtil.selectedDate));
 
-        ArrayList<Date> dayList = daysInMonthArray();
+        ArrayList<CalendarStructureModel> dayList = daysInMonthArray();
 
         CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
 

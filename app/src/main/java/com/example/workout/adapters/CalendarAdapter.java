@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workout.R;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
+import com.example.workout.models.CalendarStructureModel;
 import com.example.workout.utils.CalendarUtil;
 
 import java.time.LocalDate;
@@ -28,7 +29,7 @@ import kotlin.reflect.KParameter;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder> {
 
-    ArrayList<Date> dayList;
+    ArrayList<CalendarStructureModel> dayList;
 
 
 
@@ -38,7 +39,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     OnItemListener onItemListener;
 
-    public CalendarAdapter(ArrayList<Date> dayList, Context context, OnItemListener onItemListener){
+    public CalendarAdapter(ArrayList<CalendarStructureModel> dayList, Context context, OnItemListener onItemListener){
         this.dayList = dayList;
         this.context = context;
         this.onItemListener = onItemListener;
@@ -57,7 +58,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     @Override
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         //날짜 변수에 담기
-        Date monthDate = dayList.get(position);
+        Date monthDate = dayList.get(position).getDate();
 
         //달력 초기화
         Calendar dateCalendar = Calendar.getInstance();
@@ -120,6 +121,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
     class CalendarViewHolder extends RecyclerView.ViewHolder{
         TextView dayText;
+        TextView txtWorkOutTime;
         LinearLayout parentView;
 
         public CalendarViewHolder(View itemView){
@@ -127,6 +129,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
 
             dayText = itemView.findViewById(R.id.dayText);
             parentView = itemView.findViewById(R.id.parentView);
+            txtWorkOutTime = itemView.findViewById(R.id.txt_workout_time);
 
         }
     }

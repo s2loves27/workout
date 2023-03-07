@@ -23,7 +23,7 @@
     </TextView>
 
     <TextView
-        android:id="@+id/txt_workOutTime"
+        android:id="@+id/txt_workout_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
