@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="1h 30m"
+        android:text=""
         android:textSize="10sp"
         android:textColor="#839acc"
         android:fontFamily="@font/ddangs_light">

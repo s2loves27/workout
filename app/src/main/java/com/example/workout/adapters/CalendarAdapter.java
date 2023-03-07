@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.workout.R;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.models.CalendarStructureModel;
+import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.utils.CalendarUtil;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import kotlin.reflect.KParameter;
 
@@ -99,6 +101,32 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.sat_color));
         }else if(position == 0 || position % 7 == 0){
             holder.dayText.setTextColor(ContextCompat.getColor(context, R.color.sun_color));
+        }
+
+        List<ExerciseRecodeListItemModel> exerciseRecodeListItemModels = dayList.get(position).getExerciseRecodeListItemModel();
+
+        if(exerciseRecodeListItemModels!= null && !exerciseRecodeListItemModels.isEmpty()){
+            int time = 0;
+            for(int i = 0 ; i < exerciseRecodeListItemModels.size(); i++){
+                time += exerciseRecodeListItemModels.get(i).getExercies_recode_time();
+
+            }
+
+            int hour = time / 3600;
+            int minute = time / 60;
+            int second = time % 60;
+            String text = "";
+            if(hour > 0){
+                text += hour + "시 ";
+            }
+            if(minute > 0 ){
+                text += minute + "분 ";
+            }
+            if(second > 0){
+                text += second + "초";
+            }
+
+            holder.txtWorkOutTime.setText(text);
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

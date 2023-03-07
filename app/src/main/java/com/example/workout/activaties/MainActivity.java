@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 List<ExerciseRecodeListItemModel> result = response.body();
                 if (result != null) {
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
                     for(int i = 0 ; i < result.size(); i ++){
                         CalendarStructureModel structureModel = new CalendarStructureModel();
@@ -96,13 +97,24 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                         String exerciseUpdatedDate = exerciseRecodeListItemModel.getExercise_updated_date();
                         int exerciseRecodeTime = exerciseRecodeListItemModel.getExercies_recode_time();
 
+                        for (int j = 0 ; j < dayList.size(); j ++){
+                            String date = sdf.format(dayList.get(j).getDate());
+                            if(date.equals(exerciseRecodeDate)){
+
+                                      dayList.get(j).getExerciseRecodeListItemModel().add(exerciseRecodeListItemModel);
+                            }
+                        }
 //                        exerciseRecodeDate.equals()
                     }
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+                    CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
 
+                    //레이아웃 설정 (열 7개)
+                    RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
 
+                    recyclerView.setLayoutManager(manager);
 
+                    recyclerView.setAdapter(adapter);
 
 
                 }
@@ -229,7 +241,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         CalendarUtil.selectedDate = Calendar.getInstance();
 
 
-        setMonthView();
 
 
         if(handler == null){
@@ -241,7 +252,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         serverApiService = ServiceGenerator.createService(ServerApiService.class, preferenceHelper.getToken());
 
 
-        serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
+        setMonthView();
+
+
 
         String dayOfFirstMonth = yearMonthDayFormDate( true);
         String dayOfLastMonth = yearMonthDayFormDate(false);
@@ -251,9 +264,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
 
-        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
+//        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
+
+        serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
 
 
+        Log.i("TEST", "USERID" + preferenceHelper.getUserId());
 
 
 
@@ -458,16 +474,18 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private void setMonthView() {
         monthYearText.setText(yearMonthFromDate(CalendarUtil.selectedDate));
 
-        ArrayList<CalendarStructureModel> dayList = daysInMonthArray();
+        dayList = daysInMonthArray();
 
-        CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
+        String dayOfFirstMonth = yearMonthDayFormDate( true);
+        String dayOfLastMonth = yearMonthDayFormDate(false);
 
-        //레이아웃 설정 (열 7개)
-        RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
+        Log.i("TEST" , "dayOfFirstMonth : " + dayOfFirstMonth);
+        Log.i("TEST" , "dayOfLastMonth : " + dayOfLastMonth);
 
-        recyclerView.setLayoutManager(manager);
 
-        recyclerView.setAdapter(adapter);
+        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth, dayOfLastMonth).enqueue(exerciseRecodeListCall);
+
+
     }
 
     @Override
