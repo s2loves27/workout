@@ -61,6 +61,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     public void onBindViewHolder(@NonNull CalendarViewHolder holder, int position) {
         //날짜 변수에 담기
         Date monthDate = dayList.get(position).getDate();
+        CalendarStructureModel calendarStructureModel = dayList.get(position);
 
         //달력 초기화
         Calendar dateCalendar = Calendar.getInstance();
@@ -109,7 +110,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             int time = 0;
             for(int i = 0 ; i < exerciseRecodeListItemModels.size(); i++){
                 time += exerciseRecodeListItemModels.get(i).getExercies_recode_time();
-
             }
 
             int hour = time / 3600;
@@ -131,13 +131,9 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long time =  monthDate.getTime();
 
-                String vearMonDay = time + "";
 
-                Toast.makeText(context, vearMonDay, Toast.LENGTH_SHORT).show();
-
-                onItemListener.onItemClick(monthDate);
+                onItemListener.onItemClick(calendarStructureModel);
             }
         });
     }
@@ -163,6 +159,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
     }
 
     public interface OnItemListener{
-        void onItemClick(Date date);
+        void onItemClick(CalendarStructureModel calendarStructureModel);
     }
 }

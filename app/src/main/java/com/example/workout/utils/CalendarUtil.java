@@ -9,7 +9,7 @@ public class CalendarUtil {
 
     public static Calendar selectedDate; //년월 변수
 
-    public static ExerciseTimeModel exerciseTimeModel;
+    public static ExerciseTimeModel exerciseTimeModel = new ExerciseTimeModel(0, 0, 0);;
 
 
 }

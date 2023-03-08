@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/parentView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+
+    android:paddingBottom="10dp"
+
+    >
+
+    <TextView
+        android:id="@+id/txt_exercise_area_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="이두"
+        android:textSize="25sp"
+        android:fontFamily="@font/ddangs_light"
+        android:layout_weight="1"
+        android:gravity="center"
+        >
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/txt_exercise_tiem_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="1시간 20분 32초"
+        android:textSize="20sp"
+        android:textColor="#839acc"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:fontFamily="@font/ddangs_light">
+    </TextView>
+
+
+
+</LinearLayout>

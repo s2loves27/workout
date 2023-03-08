@@ -5,6 +5,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,6 +31,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TimerTask;
 
+import com.example.workout.dialogs.RecodeAreaListDialog;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
 import com.example.workout.models.CalendarStructureModel;
@@ -69,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     private Handler handler;
 
 
-    private SelectTimerInsertDialog selectTimerInsertDialog;
+//    private SelectTimerInsertDialog selectTimerInsertDialog;
 
+    private RecodeAreaListDialog recodeAreaListDialog;
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
 
@@ -86,22 +91,22 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 List<ExerciseRecodeListItemModel> result = response.body();
                 if (result != null) {
+
+                    for (int i = 0 ; i < dayList.size(); i++){
+                        dayList.get(i).getExerciseRecodeListItemModel().clear();
+                    }
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 //                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
                     for(int i = 0 ; i < result.size(); i ++){
                         CalendarStructureModel structureModel = new CalendarStructureModel();
                         ExerciseRecodeListItemModel exerciseRecodeListItemModel = result.get(i);
-                        String exerciseAreaId = exerciseRecodeListItemModel.getExercise_area_id();
-                        String exerciseAreaName = exerciseRecodeListItemModel.getExercise_area_name();
                         String exerciseRecodeDate = exerciseRecodeListItemModel.getExercies_recode_date();
-                        String exerciseUpdatedDate = exerciseRecodeListItemModel.getExercise_updated_date();
-                        int exerciseRecodeTime = exerciseRecodeListItemModel.getExercies_recode_time();
 
                         for (int j = 0 ; j < dayList.size(); j ++){
                             String date = sdf.format(dayList.get(j).getDate());
-                            if(date.equals(exerciseRecodeDate)){
 
-                                      dayList.get(j).getExerciseRecodeListItemModel().add(exerciseRecodeListItemModel);
+                            if(date.equals(exerciseRecodeDate)){
+                                dayList.get(j).getExerciseRecodeListItemModel().add(exerciseRecodeListItemModel);
                             }
                         }
 //                        exerciseRecodeDate.equals()
@@ -143,6 +148,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 ExerciseRecodeModel result = response.body();
                 if (result != null) {
                     Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+
+                    String dayOfFirstMonth = yearMonthDayFormDate( true);
+                    String dayOfLastMonth = yearMonthDayFormDate(false);
+
+                    serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth, dayOfLastMonth).enqueue(exerciseRecodeListCall);
 
                 }
             }else if(response.code() == 400){
@@ -215,6 +225,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeMessages(0);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,12 +263,17 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             handler = new Handler(Looper.getMainLooper());
         }
 
+        handler.postDelayed(runnable, 100);
+
+
         preferenceHelper = new PreferenceHelper(getApplicationContext());
 
         serverApiService = ServiceGenerator.createService(ServerApiService.class, preferenceHelper.getToken());
 
 
         setMonthView();
+
+
 
 
 
@@ -298,23 +319,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             @Override
             public void onClick(View view) {
 
-                if(btnTimer.getText().equals(getString(R.string.txt_select_time_insert_timer_start))) {
+                int mHour = CalendarUtil.exerciseTimeModel.getmHour();
+                int mMin = CalendarUtil.exerciseTimeModel.getmMin();
+                int mSec = CalendarUtil.exerciseTimeModel.getmSec();
 
-
+                if(mHour == 0 && mMin == 0 && mSec == 0) {
 
                     Intent intent = new Intent(getApplicationContext(), TimerService.class);
                     intent.putExtra("command", "startTime");
                     intent.putExtra("name", "123");
                     startService(intent);
                     btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
-                    handler.postDelayed(runnable, 100);
-                }else if(btnTimer.getText().equals(getString(R.string.txt_select_time_insert_timer_end))){
+//                    handler.postDelayed(runnable, 100);
+                }else {
                     //서비스
                     btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
                     txtTimer.setText("0분 0초");
-                    int mHour = CalendarUtil.exerciseTimeModel.getmHour();
-                    int mMin = CalendarUtil.exerciseTimeModel.getmMin();
-                    int mSec = CalendarUtil.exerciseTimeModel.getmSec();
+
 
                     int time = mHour * 60 * 60 + mMin * 60 + mSec;
 
@@ -331,28 +352,40 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String)spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
 
                     Intent intent = new Intent(getApplicationContext(), TimerService.class);
+
                     intent.putExtra("command", "endTime");
                     intent.putExtra("name", "123");
                     startService(intent);
-                    handler.removeMessages(0);
 
 
                 }
             }
         });
 
-        selectTimerInsertDialog = new SelectTimerInsertDialog(this, new SelectTimerInsertDialog.SelectTimerInsertDialogClickListener() {
-            @Override
-            public void onTimerClick() {
 
-            }
 
-            @Override
-            public void onInputClick() {
+//        selectTimerInsertDialog = new SelectTimerInsertDialog(this, new SelectTimerInsertDialog.SelectTimerInsertDialogClickListener() {
+//            @Override
+//            public void onTimerClick() {
+//
+//            }
+//
+//            @Override
+//            public void onInputClick() {
+//
+//            }
+//        });
 
-            }
-        });
+        recodeAreaListDialog = new RecodeAreaListDialog(this);
 
+
+
+//        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+//        lp.copyFrom(recodeAreaListDialog.getWindow().getAttributes());
+//        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+//        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+//        Window window = recodeAreaListDialog.getWindow();
+//        window.setAttributes(lp);
 
     }
 
@@ -489,11 +522,17 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     }
 
     @Override
-    public void onItemClick(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
+    public void onItemClick(CalendarStructureModel calendarStructureModel) {
+        List<ExerciseRecodeListItemModel> exerciseRecodeListItemModel = calendarStructureModel.getExerciseRecodeListItemModel();
+        ArrayList<ExerciseRecodeListItemModel> item = new ArrayList<>(exerciseRecodeListItemModel);
+        if(item != null && !item.isEmpty()){
+            recodeAreaListDialog.setListItem(item);
+            recodeAreaListDialog.show();
 
-        selectTimerInsertDialog.show();
-        selectTimerInsertDialog.setDate(yearMonthDayFromDate(calendar));
+            Window window = recodeAreaListDialog.getWindow();
+            window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+//            recodeAreaListDialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
+        }
     }
 }

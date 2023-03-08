@@ -3,6 +3,7 @@ package com.example.workout.services;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -48,6 +49,7 @@ public class TimerService extends Service {
             public void run() {
                 mMsec++;
                 if(mMsec >= 100){
+                    Log.i("TEST",  "Service sec : " + CalendarUtil.exerciseTimeModel.getmSec());
                     mMsec=0;
                     CalendarUtil.exerciseTimeModel.setmSec(CalendarUtil.exerciseTimeModel.getmSec() + 1);
                 }
