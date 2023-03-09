@@ -46,6 +46,7 @@ import com.example.workout.models.CalendarStructureModel;
 import com.example.workout.models.ExerciseAreaModel;
 import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.models.ExerciseRecodeModel;
+import com.example.workout.models.ExerciseRecodeStatisticsModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
@@ -69,6 +70,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     TextView txtTimer;
 
     Spinner spinner;
+
+    TextView txtThisMonth;
+    TextView txtLastMonth;
+    TextView txtLastMonthAll;
 
     private Handler handler;
 
@@ -140,6 +145,82 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             t.printStackTrace();
         }
     };
+
+    private final Callback<ExerciseRecodeStatisticsModel> exerciseRecodeStatisticsCall = new Callback<ExerciseRecodeStatisticsModel>() {
+        @Override
+        public void onResponse(Call<ExerciseRecodeStatisticsModel> call, Response<ExerciseRecodeStatisticsModel> response) {
+            if (response.isSuccessful()) {
+                ExerciseRecodeStatisticsModel result = response.body();
+                if (result != null) {
+                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                    int iThisMonth = result.getThis_month();
+                    int iLastMonth = result.getLast_month();
+                    int iLastMonthDay = result.getLast_month_day();
+
+                    int iThisMonthHour = iThisMonth / 3600;
+                    int iThisMonthMinute = iThisMonth / 60;
+                    int iThisMonthSecond = iThisMonth % 60;
+
+                    String strThisMonth = "";
+                    if(iThisMonthHour > 0) strThisMonth += iThisMonthHour  + "시간 ";
+                    if(iThisMonthMinute > 0) strThisMonth += iThisMonthMinute  + "분 ";
+                    if(iThisMonthSecond > 0) strThisMonth += iThisMonthSecond  + "초";
+
+                    int iLastMonthHour = iLastMonth / 3600;
+                    int iLastMonthMinute = iLastMonth / 60;
+                    int iLastMonthSecond = iLastMonth % 60;
+
+                    String strLastMonth = "";
+                    if(iLastMonthHour > 0) strLastMonth += iLastMonthHour  + "시간 ";
+                    if(iLastMonthMinute > 0) strLastMonth += iLastMonthMinute  + "분 ";
+                    if(iLastMonthSecond > 0) strLastMonth += iLastMonthSecond  + "초";
+
+
+                    int iLastDayMonthHour = iLastMonthDay / 3600;
+                    int iLastDayMonthMinute = iLastMonthDay / 60;
+                    int iLastDayMonthSecond = iLastMonthDay % 60;
+
+                    String strLastDayMonth = "";
+                    if(iLastDayMonthHour > 0) strLastDayMonth += iLastDayMonthHour  + "시간 ";
+                    if(iLastDayMonthMinute > 0) strLastDayMonth += iLastDayMonthMinute  + "분 ";
+                    if(iLastDayMonthSecond > 0) strLastDayMonth += iLastDayMonthSecond  + "초";
+
+
+
+
+                    txtThisMonth.setText(strThisMonth);
+                    txtLastMonth.setText(strLastDayMonth);
+                    txtLastMonthAll.setText(strLastMonth);
+
+
+                    String dayOfFirstMonth = yearMonthDayFormDate( true);
+                    String dayOfLastMonth = yearMonthDayFormDate(false);
+
+                    serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth, dayOfLastMonth).enqueue(exerciseRecodeListCall);
+
+                }
+            }else if(response.code() == 400){
+                ExerciseRecodeStatisticsModel result = response.body();
+                if(result != null){
+                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else{
+                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+            }
+//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onFailure(Call<ExerciseRecodeStatisticsModel> call, Throwable t) {
+            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
+            t.printStackTrace();
+        }
+    };
+
 
     private final Callback<ExerciseRecodeModel> exerciseRecodeCall = new Callback<ExerciseRecodeModel>() {
             @Override
@@ -250,6 +331,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         btnTimer = findViewById(R.id.btn_timer);
         txtTimer = findViewById(R.id.txt_timer);
 
+
+        txtThisMonth = findViewById(R.id.txt_this_month);
+        txtLastMonth = findViewById(R.id.txt_last_month);
+        txtLastMonthAll = findViewById(R.id.txt_last_month_all);
+
         spinner = findViewById(R.id.spinner);
 
 
@@ -297,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 //        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
 
         serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
+        serverApiService.exerciseRecodeStatistics(preferenceHelper.getUserId()).enqueue(exerciseRecodeStatisticsCall);
 
 
         Log.i("TEST", "USERID" + preferenceHelper.getUserId());
@@ -355,9 +442,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     String getDate = sdf.format(date);
 
-
-
-
                     serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String)spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
 
                     Intent intent = new Intent(getApplicationContext(), TimerService.class);
@@ -403,10 +487,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         @Override
         public void run() {
 
-//            CalendarUtil.exerciseTimeModel.getmMin()
             txtTimer.setText(CalendarUtil.exerciseTimeModel.getmMin() + "분 " +  CalendarUtil.exerciseTimeModel.getmSec() + "초");
-
             handler.postDelayed(runnable, 100);
+
         }
     };
 

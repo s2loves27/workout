@@ -4,6 +4,7 @@ import com.example.workout.models.CheckUserModel;
 import com.example.workout.models.ExerciseAreaModel;
 import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.models.ExerciseRecodeModel;
+import com.example.workout.models.ExerciseRecodeStatisticsModel;
 import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.models.UserModel;
@@ -71,6 +72,12 @@ public interface ServerApiService {
             @Field("start_date") String start_date,
             @Field("end_date") String end_date
             );
+
+    @FormUrlEncoded
+    @POST("v1/exercise/recode/statistics/")
+    Call<ExerciseRecodeStatisticsModel> exerciseRecodeStatistics(
+            @Field("exercise_user_id") String exercise_user_id
+    );
 
 
 
