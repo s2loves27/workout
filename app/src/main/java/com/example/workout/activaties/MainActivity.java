@@ -274,7 +274,16 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         setMonthView();
 
 
+        int mHour = CalendarUtil.exerciseTimeModel.getmHour();
+        int mMin = CalendarUtil.exerciseTimeModel.getmMin();
+        int mSec = CalendarUtil.exerciseTimeModel.getmSec();
 
+        if(mHour == 0 && mMin == 0 && mSec == 0) {
+            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
+        }else{
+            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
+
+        }
 
 
         String dayOfFirstMonth = yearMonthDayFormDate( true);
