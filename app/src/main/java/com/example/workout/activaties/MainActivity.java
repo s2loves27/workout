@@ -129,12 +129,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
                 }
             }else if(response.code() == 400){
-//                List<ExerciseRecodeListItemModel> result = response.body();
                     Toast.makeText(getApplicationContext(), "Token이 만료 되었습니다 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
                     finish();
             }
             else{
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+
+                finish();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
@@ -207,9 +208,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 else{
                     Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
                 }
+                finish();
             }
             else{
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
+
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
@@ -244,9 +248,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 else{
                     Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
                 }
+                finish();
             }
             else{
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+                finish();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
