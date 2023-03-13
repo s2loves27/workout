@@ -1,13 +1,16 @@
 package com.example.workout.activaties;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AppOpsManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
@@ -18,6 +21,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.util.Log;
 import android.view.View;
@@ -44,9 +48,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.TimerTask;
 
+import com.example.workout.dialogs.BatteryPermissionDialog;
 import com.example.workout.dialogs.RecodeAreaListDialog;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
@@ -137,10 +143,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
                 }
             } else if (response.code() == 400) {
-                Toast.makeText(getApplicationContext(), "Token이 만료 되었습니다 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
 
                 finish();
             }
@@ -160,7 +166,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 ExerciseRecodeStatisticsModel result = response.body();
                 if (result != null) {
-                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
                     int iThisMonth = result.getThis_month();
                     int iLastMonth = result.getLast_month();
                     int iLastMonthDay = result.getLast_month_day();
@@ -170,18 +176,18 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     int iThisMonthSecond = iThisMonth % 60;
 
                     String strThisMonth = "";
-                    if (iThisMonthHour > 0) strThisMonth += iThisMonthHour + "시간 ";
-                    if (iThisMonthMinute > 0) strThisMonth += iThisMonthMinute + "분 ";
-                    if (iThisMonthSecond > 0) strThisMonth += iThisMonthSecond + "초";
+                    if (iThisMonthHour > 0) strThisMonth += iThisMonthHour + "h ";
+                    if (iThisMonthMinute > 0) strThisMonth += iThisMonthMinute + "m ";
+                    if (iThisMonthSecond > 0) strThisMonth += iThisMonthSecond + "s";
 
                     int iLastMonthHour = iLastMonth / 3600;
                     int iLastMonthMinute = iLastMonth / 60;
                     int iLastMonthSecond = iLastMonth % 60;
 
                     String strLastMonth = "";
-                    if (iLastMonthHour > 0) strLastMonth += iLastMonthHour + "시간 ";
-                    if (iLastMonthMinute > 0) strLastMonth += iLastMonthMinute + "분 ";
-                    if (iLastMonthSecond > 0) strLastMonth += iLastMonthSecond + "초";
+                    if (iLastMonthHour > 0) strLastMonth += iLastMonthHour + "h ";
+                    if (iLastMonthMinute > 0) strLastMonth += iLastMonthMinute + "m ";
+                    if (iLastMonthSecond > 0) strLastMonth += iLastMonthSecond + "s";
 
 
                     int iLastDayMonthHour = iLastMonthDay / 3600;
@@ -189,9 +195,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                     int iLastDayMonthSecond = iLastMonthDay % 60;
 
                     String strLastDayMonth = "";
-                    if (iLastDayMonthHour > 0) strLastDayMonth += iLastDayMonthHour + "시간 ";
-                    if (iLastDayMonthMinute > 0) strLastDayMonth += iLastDayMonthMinute + "분 ";
-                    if (iLastDayMonthSecond > 0) strLastDayMonth += iLastDayMonthSecond + "초";
+                    if (iLastDayMonthHour > 0) strLastDayMonth += iLastDayMonthHour + "h ";
+                    if (iLastDayMonthMinute > 0) strLastDayMonth += iLastDayMonthMinute + "m ";
+                    if (iLastDayMonthSecond > 0) strLastDayMonth += iLastDayMonthSecond + "s";
 
 
                     txtThisMonth.setText(strThisMonth);
@@ -208,13 +214,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             } else if (response.code() == 400) {
                 ExerciseRecodeStatisticsModel result = response.body();
                 if (result != null) {
-                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
                 }
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
                 finish();
 
             }
@@ -235,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             if (response.isSuccessful()) {
                 ExerciseRecodeModel result = response.body();
                 if (result != null) {
-                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_main_save_complete), Toast.LENGTH_SHORT).show();
 
                     String dayOfFirstMonth = yearMonthDayFormDate(true);
                     String dayOfLastMonth = yearMonthDayFormDate(false);
@@ -246,13 +252,13 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             } else if (response.code() == 400) {
                 ExerciseRecodeModel result = response.body();
                 if (result != null) {
-                    Toast.makeText(getApplicationContext(), "통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
                 }
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "권한이 없습니다. APP을 다시 실행 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
                 finish();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
@@ -274,11 +280,22 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 if (result != null) {
                     exerciseArea = new HashMap<>();
                     ArrayList<String> strExerciseArea = new ArrayList<>();
-                    for (int i = 0; i < result.size(); i++) {
-                        ExerciseAreaModel exerciseAreaModel = result.get(i);
-                        strExerciseArea.add(exerciseAreaModel.getExercise_area_name());
-                        exerciseArea.put(exerciseAreaModel.getExercise_area_name(), exerciseAreaModel.getExercise_id());
-                    }
+                    String locale = Util.getLocale(getApplicationContext());
+
+                        for (int i = 0; i < result.size(); i++) {
+
+                            ExerciseAreaModel exerciseAreaModel = result.get(i);
+                            if(locale.equals("ko")) {
+                                strExerciseArea.add(exerciseAreaModel.getExercise_area_name());
+                                exerciseArea.put(exerciseAreaModel.getExercise_area_name(), exerciseAreaModel.getExercise_id());
+
+                            }else {
+                                strExerciseArea.add(exerciseAreaModel.getExercise_area_name_en());
+                                exerciseArea.put(exerciseAreaModel.getExercise_area_name_en(), exerciseAreaModel.getExercise_id());
+                            }
+                        }
+
+
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.spinner_item_exercise_area, strExerciseArea);
 
@@ -296,11 +313,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             } else if (response.code() == 400) {
 //                List<ExerciseAreaModel> result = response.body();
 
-                Toast.makeText(getApplicationContext(), "Token이 만료 되었습니다 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
                 finish();
 
             } else {
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
@@ -311,6 +328,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             t.printStackTrace();
         }
     };
+
 
     @Override
     protected void onDestroy() {
@@ -343,6 +361,19 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         txtLastMonthAll = findViewById(R.id.txt_last_month_all);
 
         spinner = findViewById(R.id.spinner);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (powerManager.isIgnoringBatteryOptimizations(getPackageName()) == false) {
+                // 화이트 리스트 등록 안됨.
+                FragmentManager fm = getSupportFragmentManager();
+
+                BatteryPermissionDialog fragment = new BatteryPermissionDialog();
+
+                fragment.show(fm, "dialog");
+
+            }
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -398,7 +429,6 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         Log.i("TEST", "dayOfFirstMonth : " + dayOfFirstMonth);
         Log.i("TEST", "dayOfLastMonth : " + dayOfLastMonth);
 
-
 //        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
 
         serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
@@ -437,31 +467,36 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 int mMin = CalendarUtil.exerciseTimeModel.getmMin();
                 int mSec = CalendarUtil.exerciseTimeModel.getmSec();
 
-                if (mHour == 0 && mMin == 0 && mSec == 0) {
+                if (!checkPermission()) {
 
-                    sendMessageToService("startTimer");
-                    btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
-                    spinner.setEnabled(false);
+                    if (mHour == 0 && mMin == 0 && mSec == 0) {
+
+                        sendMessageToService("startTimer");
+                        btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
+                        spinner.setEnabled(false);
+
+
 //                    handler.postDelayed(runnable, 100);
-                } else {
-                    //서비스
-                    btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
-                    txtTimer.setText("0분 0초");
-                    spinner.setEnabled(true);
-                    sendMessageToService("endTimer");
+                    } else {
+                        //서비스
+                        btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
+                        txtTimer.setText("0h 0m 0s");
+                        spinner.setEnabled(true);
+                        sendMessageToService("endTimer");
 
-                    int time = mHour * 60 * 60 + mMin * 60 + mSec;
-
-
-                    long now = System.currentTimeMillis();
-                    Date date = new Date(now);
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                    String getDate = sdf.format(date);
-
-                    serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String) spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
+                        int time = mHour * 60 * 60 + mMin * 60 + mSec;
 
 
+                        long now = System.currentTimeMillis();
+                        Date date = new Date(now);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        String getDate = sdf.format(date);
+
+                        serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String) spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
+
+
+                    }
                 }
             }
         });
@@ -519,7 +554,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         @Override
         public void run() {
 
-            txtTimer.setText(CalendarUtil.exerciseTimeModel.getmMin() + "분 " + CalendarUtil.exerciseTimeModel.getmSec() + "초");
+            txtTimer.setText(CalendarUtil.exerciseTimeModel.getmHour() + "h " +CalendarUtil.exerciseTimeModel.getmMin() + "m " + CalendarUtil.exerciseTimeModel.getmSec() + "s");
             handler.postDelayed(runnable, 100);
 
         }
@@ -538,19 +573,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH) + 1;
 
-        String yearMonth = year + "년 " + month + "월";
+        String yearMonth = year + " - " + month;
         return yearMonth;
-    }
-
-    private String yearMonthDayFromDate(Calendar calendar) {
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-
-        String yearMonthDay = year + "년 " + month + "월 " + day + "일";
-
-        return yearMonthDay;
     }
 
 
@@ -677,4 +701,26 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             }
         }
     }
+
+    private boolean checkPermission(){
+
+        boolean granted = false;
+
+        AppOpsManager appOps = (AppOpsManager) getApplicationContext()
+                .getSystemService(Context.APP_OPS_SERVICE);
+
+        int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                android.os.Process.myUid(), getApplicationContext().getPackageName());
+
+        if (mode == AppOpsManager.MODE_DEFAULT) {
+            granted = (getApplicationContext().checkCallingOrSelfPermission(
+                    android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+        }
+        else {
+            granted = (mode == AppOpsManager.MODE_ALLOWED);
+        }
+
+        return granted;
+    }
+
 }

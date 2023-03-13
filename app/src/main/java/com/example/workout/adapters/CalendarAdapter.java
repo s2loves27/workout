@@ -117,13 +117,13 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             int second = time % 60;
             String text = "";
             if(hour > 0){
-                text += hour + "시 ";
+                text += hour + "h ";
             }
             if(minute > 0 ){
-                text += minute + "분 ";
+                text += minute + "m ";
             }
             if(second > 0){
-                text += second + "초";
+                text += second + "s";
             }
 
             holder.txtWorkOutTime.setText(text);

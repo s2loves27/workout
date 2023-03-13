@@ -61,7 +61,7 @@
             android:layout_marginBottom="10dp"
             android:gravity="center"
             android:textColorHint="@color/gray5"
-            android:hint="이메일 주소를 입력해주세요"
+            android:hint="@string/txt_join_form_email_hint"
 
             >
 
@@ -86,7 +86,7 @@
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
             android:textColorHint="@color/gray5"
-            android:hint="비밀번호를 입력하세요">
+            android:hint="@string/txt_join_form_password_hint">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_edit_password"
@@ -107,7 +107,7 @@
             android:layout_marginRight="40dp"
             android:checked="true"
             android:buttonTint="@color/Mpuple5"
-            android:text="로그인 상태 유지" />
+            android:text="@string/txt_login_form_keep" />
 
 
     </LinearLayout>

@@ -30,7 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="1시간 20분 32초"
+        android:text="1h 20m 32s"
         android:textSize="20sp"
         android:textColor="#839acc"
         android:layout_weight="1"

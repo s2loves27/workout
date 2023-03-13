@@ -90,13 +90,13 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), result.getMessage() + response.code(), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "400 통신 에러" + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400) + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }else if(response.code() == 500){
-                Toast.makeText(getApplicationContext(), "회원이 존재하지 않습니다." + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_login_not_member) + response.code(), Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(getApplicationContext(), "서버 에러 " + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server) + response.code(), Toast.LENGTH_SHORT).show();
             }
 
             Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
@@ -151,11 +151,11 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "400 통신 에러", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
                 }
             }
             else{
-                Toast.makeText(getApplicationContext(), "Email 또는 패스워드가 틀립니다 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_login_not_match) , Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -210,16 +210,16 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 if(email.equals("")){
-                    Toast.makeText(getApplicationContext(), "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_email), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!emailPattern.matcher(email).matches()){
-                    Toast.makeText(getApplicationContext(), "이메일 형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),  getString(R.string.txt_join_nomatch_email), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 if(password.equals("")){
-                    Toast.makeText(getApplicationContext(), "패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_password), Toast.LENGTH_SHORT).show();
                 }
 
                 serverApiService.login(email, password).enqueue(loginCall);

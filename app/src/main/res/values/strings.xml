@@ -1,17 +1,83 @@
 <resources>
     <string name="app_name">workout</string>
 
-    <string name="txt_select_time_insert_title">시간 입력 방법을 선택해주세요</string>
-    <string name="txt_select_time_insert_timer">타이머</string>
-    <string name="txt_select_time_insert_input">직접입력</string>
+    <string name="txt_select_time_insert_title">Please select a time input method</string>
+    <string name="txt_select_time_insert_timer">timer</string>
+    <string name="txt_select_time_insert_input">direct input</string>
 
-    <string name="txt_select_time_insert_timer_start">시작</string>
-    <string name="txt_select_time_insert_timer_end">종료</string>
+    <string name="txt_select_time_insert_timer_start">start</string>
+    <string name="txt_select_time_insert_timer_end">end</string>
 
-    <string name="txt_pre_sign_up">회원가입</string>
-    <string name="txt_pre_sign_in">로그인</string>
+    <string name="txt_pre_sign_up">sign up</string>
+    <string name="txt_pre_sign_in">sign in</string>
 
-    <string name="txt_error_internet">인터넷 연결 오류</string>
+    <string name="txt_error_internet">internet connection error</string>
+
+    <string name = "txt_join_complete">Registration Complete</string>
+    <string name = "txt_join_error_value">An invalid value was entered. Please check</string>
+    <string name = "txt_join_error_nocomplete">You have not registered as a member. Please check.</string>
+    <string name = "txt_join_error_400">400 communication error</string>
+    <string name = "txt_join_error_server">server error.</string>
+
+    <string name = "txt_join_insert_email">Please enter your e-mail</string>
+    <string name = "txt_join_nomatch_email">Email format is incorrect.</string>
+    <string name = "txt_join_insert_name">Input your name, please.</string>
+    <string name = "txt_join_max_name">The maximum length of the name is 10 characters.</string>
+    <string name = "txt_join_insert_sex">Please select a gender.</string>
+    <string name = "txt_join_insert_password">Please enter your password.</string>
+    <string name = "txt_join_rule_password">Password must consist of 8 English characters + special characters + numbers.</string>
+    <string name = "txt_join_insert_password2">Please enter password confirmation.</string>
+    <string name = "txt_join_nomatch_password">Password and password confirmation are different.</string>
+    <string name = "txt_join_insert_birth">Please select your date of birth.</string>
+    <string name = "txt_join_check_privacy">Please check the personal information collection and use agreement.</string>
+    <string name = "txt_join_check_privacy2">Check the terms and conditions of service and agree.</string>
+
+    <string name = "txt_join_form_main">sign up</string>
+    <string name = "txt_join_form_email">Email</string>
+    <string name = "txt_join_form_email_hint">Please enter your email</string>
+
+    <string name = "txt_join_form_name">Name</string>
+    <string name = "txt_join_form_name_hint">Please enter your full name</string>
+
+    <string name = "txt_join_form_sex">Gender</string>
+    <string name = "txt_join_form_sex_male">Male</string>
+    <string name = "txt_join_form_sex_female">Female</string>
+
+    <string name = "txt_join_form_password">Password</string>
+    <string name = "txt_join_form_password_hint">Please enter a password</string>
+    <string name = "txt_join_form_password2">Verify password</string>
+    <string name = "txt_join_form_password2_hint">Please check your password</string>
+    <string name = "txt_join_form_password_form">Please enter at least 8 characters with a combination of uppercase and lowercase letters, numbers, and special characters.</string>
+
+    <string name = "txt_join_form_birth">Birth date</string>
+    <string name = "txt_join_form_birth_click">please click.</string>
+
+    <string name = "txt_join_form_agree">Full Agreement</string>
+    <string name = "txt_join_form_agree_privacy1">Consent to collection and use of personal information (required)</string>
+    <string name = "txt_join_form_agree_privacy2">Check and agree to the Terms of Service (required)</string>
+    <string name = "txt_join_form_agree_privacy3">Opt-in to marketing (optional)</string>
+
+    <string name = "txt_join_form_confirm">Sign up</string>
+
+    <string name = "txt_login_form_keep">Keep logged in</string>
+
+    <string name = "txt_login_this_month">The current month</string>
+    <string name = "txt_login_last_month">The same period of the previous month</string>
+    <string name = "txt_login_last_month_all">The previous month</string>
+
+    <string name = "txt_login_not_member">Member does not exist.</string>
+    <string name = "txt_login_not_match">Email or password is incorrect. Please check.</string>
+
+    <string name = "txt_main_token_error">Token has expired. Please log in again.</string>
+    <string name = "txt_main_server_error">Server Error</string>
+    <string name = "txt_main_save_complete">Saving is complete.</string>
+
+    <string name = "txt_main_list_part">Part</string>
+    <string name = "txt_main_list_time">Time</string>
+
+    <string name = "txt_splash_db_error">There is a problem with the DB. Please contact the administrator</string>
+    <string name = "txt_splash_session_error">Session has expired. please log in again</string>
+    <string name = "txt_splash_token_error">There is no issued token. Please log in again.</string>
 
 
 </resources>

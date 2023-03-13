@@ -16,6 +16,9 @@ public class ExerciseRecodeListItemModel {
     @SerializedName("exercise_area_name")
     private String exercise_area_name;
 
+    @SerializedName("exercise_area_name_en")
+    private String exercise_area_name_en;
+
     @SerializedName("exercise_updated_date")
     private String exercise_updated_date;
 
@@ -58,5 +61,9 @@ public class ExerciseRecodeListItemModel {
 
     public String getExercise_updated_date() {
         return exercise_updated_date;
+    }
+
+    public String getExercise_area_name_en() {
+        return exercise_area_name_en;
     }
 }

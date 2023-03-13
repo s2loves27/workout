@@ -43,7 +43,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="3"
                 android:fontFamily="@font/ddangs_bold"
-                android:text="2023년 1월"
+                android:text="2023 - 1"
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textSize="25sp"
@@ -102,7 +102,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:text="xx분 xx초"
+                    android:text="xxm xxs"
                     android:textColor="@color/black"
                     android:textSize="25sp">
 
@@ -138,6 +138,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_marginBottom="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -146,7 +147,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:text="당월 총 운동 시간:"
+                    android:text="@string/txt_login_this_month"
                     android:textColor="@color/black"
                     android:textSize="15sp"></TextView>
 
@@ -168,6 +169,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
+                android:layout_marginBottom="5dp"
+
                 android:orientation="horizontal">
 
                 <TextView
@@ -176,14 +179,14 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:text="전월 동기간 운동 시간:"
+                    android:text="@string/txt_login_last_month"
                     android:textColor="@color/black"
                     android:textSize="15sp"></TextView>
 
                 <TextView
                     android:id="@+id/txt_last_month"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
@@ -207,7 +210,7 @@
                     android:layout_weight="1"
                     android:fontFamily="@font/ddangs_bold"
                     android:gravity="center"
-                    android:text="전월 총 운동 시간:"
+                    android:text="@string/txt_login_last_month_all"
                     android:textColor="@color/black"
                     android:textSize="15sp"></TextView>
 

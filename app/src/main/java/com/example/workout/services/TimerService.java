@@ -1,7 +1,13 @@
 package com.example.workout.services;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -13,7 +19,10 @@ import android.os.health.TimerStat;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 
+import com.example.workout.R;
+import com.example.workout.activaties.MainActivity;
 import com.example.workout.models.ExerciseTimeModel;
 import com.example.workout.utils.CalendarUtil;
 
@@ -28,6 +37,8 @@ public class TimerService extends Service {
 
     public static final int MSG_SEND_TO_SERVICE = 3;
     public static final int MSG_SEND_TO_ACTIVITY = 4;
+
+    public static final String CHANNEL_ID = "99";
     Timer mTimer;
     TimerTask mTimerTask;
 
@@ -62,6 +73,12 @@ public class TimerService extends Service {
     }
 
     @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
 
@@ -90,11 +107,13 @@ public class TimerService extends Service {
     };
 
     private void timerStart() {
+        initializeNotification();
         handler.postDelayed(runnable, 1000);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         if (intent == null) {
             return Service.START_STICKY; // 서비스가 종료 되었을 때도 다시 자동으로 실행 함
         } else {
@@ -164,4 +183,47 @@ public class TimerService extends Service {
             Log.e("TEST", e.getMessage());
         }
     }
+
+
+//    포그라운드 서비스
+    public void initializeNotification(){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        builder.setSmallIcon(R.drawable.calendar_main);
+        NotificationCompat.BigTextStyle style = new NotificationCompat.BigTextStyle();
+
+        style.bigText("App을 실행하려면 눌러주세요");
+        style.setBigContentTitle(null);
+        style.setSummaryText("서비스 동작중");
+
+        builder.setContentTitle(null);
+        builder.setContentText(null);
+        builder.setOngoing(true);
+        builder.setWhen(System.currentTimeMillis());
+        builder.setShowWhen(false);
+
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 101, notificationIntent, PendingIntent.FLAG_NO_CREATE|PendingIntent.FLAG_IMMUTABLE);
+        builder.setContentIntent(pendingIntent);
+
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence channelName = "노티피케이션 채널";
+            String description = "해당 채널에 대한 설명";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, channelName, importance);
+            channel.setDescription(description);
+
+            assert manager != null;
+            manager.createNotificationChannel(channel);
+
+        }
+//        Notification notification = builder.build();
+        manager.notify(1, builder.build());
+
+        startForeground(1, builder.build());
+
+    }
+
 }

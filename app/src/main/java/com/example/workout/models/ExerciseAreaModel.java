@@ -7,6 +7,10 @@ public class ExerciseAreaModel {
     @SerializedName("exercise_area_name")
     private String exercise_area_name;
 
+    @SerializedName("exercise_area_name_en")
+    private String exercise_area_name_en;
+
+
     @SerializedName("exercise_id")
     private String exercise_id;
 
@@ -39,5 +43,7 @@ public class ExerciseAreaModel {
         return messages;
     }
 
-
+    public String getExercise_area_name_en() {
+        return exercise_area_name_en;
+    }
 }

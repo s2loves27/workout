@@ -1,5 +1,7 @@
 package com.example.workout.utils;
 
+import android.content.Context;
+
 public class  Util {
 
     public static String getMonth(int month){
@@ -16,5 +18,9 @@ public class  Util {
         }else{
             return String.valueOf(day);
         }
+    }
+
+    public static String getLocale(Context context) {
+        return context.getResources().getConfiguration().locale.getLanguage();
     }
 }

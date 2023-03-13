@@ -37,7 +37,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/ddangs_light"
                 android:gravity="center"
-                android:text="부위"
+                android:text="@string/txt_main_list_part"
                 android:textSize="30sp">
 
             </TextView>
@@ -50,7 +50,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/ddangs_light"
                 android:gravity="center"
-                android:text="시간"
+                android:text="@string/txt_main_list_time"
                 android:textColor="#839acc"
                 android:textSize="30sp"></TextView>
         </LinearLayout>

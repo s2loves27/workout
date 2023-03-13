@@ -75,7 +75,7 @@ public class JoinActivity extends AppCompatActivity {
 
                     if(code == 1) {
 
-                        Toast.makeText(getApplicationContext(), "회원가입 완료", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), getString(R.string.txt_join_complete), Toast.LENGTH_SHORT).show();
                         serverApiService.kakaoLogin(result.getEmail()).enqueue(kakaoLoginCall);
 
 
@@ -88,9 +88,9 @@ public class JoinActivity extends AppCompatActivity {
                 }
 
             } else if(response.code() == 400){
-                Toast.makeText(getApplicationContext(), "잘못된 값이 입력 되었습니다. 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_value), Toast.LENGTH_SHORT).show();
             } else{
-                Toast.makeText(getApplicationContext(), "회원 가입이 되지 않았습니다. 확인해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_nocomplete), Toast.LENGTH_SHORT).show();
             }
 
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
@@ -131,11 +131,11 @@ public class JoinActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), result.getMessage() + response.code(), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "400 통신 에러" + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400) + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
             else{
-                Toast.makeText(getApplicationContext(), "서버 에러." + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server) + response.code(), Toast.LENGTH_SHORT).show();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
@@ -220,22 +220,22 @@ public class JoinActivity extends AppCompatActivity {
                 Pattern passwordPatten = Pattern.compile("^(?=.*[a-zA-Z])(?=.*\\d)(?=.*\\W).{8,20}$");
                 String email = et_join_email.getText().toString();
                 if(email.equals("")){
-                    Toast.makeText(getApplicationContext(), "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_email), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!emailPattern.matcher(email).matches()){
-                    Toast.makeText(getApplicationContext(), "이메일 형식이 맞지 않습니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_nomatch_email), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 String username = et_join_name.getText().toString();
 
                 if(username.equals("")){
-                    Toast.makeText(getApplicationContext(), "이름을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),  getString(R.string.txt_join_insert_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(username.length() >= 10) {
-                    Toast.makeText(getApplicationContext(), "이름의 최대 길이는 10자 입니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_max_name), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -249,46 +249,46 @@ public class JoinActivity extends AppCompatActivity {
                     sex = "W";
                 }
                 if(sex.equals("")){
-                    Toast.makeText(getApplicationContext(), "성별을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_sex), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 password = et_join_password.getText().toString();
                 if(password.equals("")){
-                    Toast.makeText(getApplicationContext(), "패스워드를 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_password), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!passwordPatten.matcher(password).find()) {
-                    Toast.makeText(getApplicationContext(), "패스워드 영문+특수문자+숫자 8자로 구성되어야 합니다..", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_rule_password), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 String password2 = et_join_password2.getText().toString();
 
                 if(password2.equals("")){
-                    Toast.makeText(getApplicationContext(), "패스워드 확인을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_insert_password2), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(!password.equals(password2)){
-                    Toast.makeText(getApplicationContext(), "패스워드와 패스워드 확인이 다릅니다.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_nomatch_password), Toast.LENGTH_SHORT).show();
                     return;
 
                 }
 
 
                 if(selectedDateStr.equals("")){
-                    Toast.makeText(getApplicationContext(), "생년월일을 선택해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),  getString(R.string.txt_join_insert_birth), Toast.LENGTH_SHORT).show();
                     return;
 
                 }
 
                 if(!cb_join_agree_1.isChecked()){
-                    Toast.makeText(getApplicationContext(), "개인 정보 수집 및 이용동의 항목을 체크해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_check_privacy), Toast.LENGTH_SHORT).show();
                     return;
 
                 }
 
 
                 if(!cb_join_agree_2.isChecked()){
-                    Toast.makeText(getApplicationContext(), "서비스 이용 약관 확인 및 동의를 체크해주세요.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_check_privacy2), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -332,7 +332,7 @@ public class JoinActivity extends AppCompatActivity {
     private void showDateDialog(){
         Calendar calendar = Calendar.getInstance();
         try {
-            if(btnJoinDatePicker.getText().toString().equals("클릭해주세요.")){
+            if(btnJoinDatePicker.getText().toString().equals(getString(R.string.txt_join_form_birth_click))){
                 curDate = dataFormat.parse(result);
             }else{
                 curDate = dataFormat.parse(btnJoinDatePicker.getText().toString());

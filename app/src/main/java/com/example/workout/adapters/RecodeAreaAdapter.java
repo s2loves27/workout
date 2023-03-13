@@ -17,6 +17,7 @@ import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.models.CalendarStructureModel;
 import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.utils.CalendarUtil;
+import com.example.workout.utils.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -54,7 +55,18 @@ public class RecodeAreaAdapter extends RecyclerView.Adapter<RecodeAreaAdapter.Ca
         //날짜 변수에 담기
         ExerciseRecodeListItemModel exerciseRecodeListItemModel = dayList.get(position);
 
-        holder.txtExerciseAreaItem.setText(exerciseRecodeListItemModel.getExercise_area_name());
+
+        String locale = Util.getLocale(context);
+
+        if(locale.equals("ko")) {
+            holder.txtExerciseAreaItem.setText(exerciseRecodeListItemModel.getExercise_area_name());
+
+        }else {
+            holder.txtExerciseAreaItem.setText(exerciseRecodeListItemModel.getExercise_area_name_en());
+
+        }
+
+
 
 
        int time = exerciseRecodeListItemModel.getExercies_recode_time();
@@ -66,13 +78,13 @@ public class RecodeAreaAdapter extends RecyclerView.Adapter<RecodeAreaAdapter.Ca
 
         String text = "";
         if(hour > 0){
-            text += hour + "시 ";
+            text += hour + "h ";
         }
         if(minute > 0){
-            text += minute + "분 ";
+            text += minute + "m ";
         }
         if(second > 0){
-            text += second + "초";
+            text += second + "s";
         }
 
         holder.txtExerciseTiemItem.setText(text);

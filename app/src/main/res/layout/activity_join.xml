@@ -34,12 +34,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
-                android:text="회원가입"
+                android:fontFamily="@font/ddangs_bold"
+                android:text="@string/txt_join_form_main"
                 android:textColor="#000000"
                 android:textSize="9pt"
-                android:textStyle="bold"
-                android:fontFamily="@font/ddangs_bold"
-                ></TextView>
+                android:textStyle="bold"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -50,7 +49,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="이메일 주소"
+                    android:text="@string/txt_join_form_email"
                     android:textColor="#000000"
                     android:textSize="7pt"
                     android:textStyle="bold"
@@ -66,7 +65,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:hint="이메일 주소를 입력해주세요"
+                    android:hint="@string/txt_join_form_email_hint"
                     android:textColorHint="@color/gray5"
                     app:boxStrokeColor="@color/Mpuple5"
                     app:boxStrokeWidth="0dp"
@@ -89,7 +88,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="이름"
+                    android:text="@string/txt_join_form_name"
                     android:textColor="#000000"
                     android:textSize="7pt"
                     android:textStyle="bold"
@@ -104,7 +103,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:hint="성명을 입력해주세요"
+                    android:hint="@string/txt_join_form_name_hint"
                     android:textColorHint="@color/gray5"
                     app:boxStrokeColor="@color/Mpuple5"
                     app:boxStrokeWidth="0dp"
@@ -125,7 +124,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="성별"
+                    android:text="@string/txt_join_form_sex"
                     android:textColor="#000000"
                     android:textSize="7pt"
                     android:textStyle="bold"
@@ -140,14 +139,14 @@
 
                     <RadioButton
                         android:id="@+id/rb_man"
-                        android:text="남성"
+                        android:text="@string/txt_join_form_sex_male"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
 
                     <RadioButton
                         android:id="@+id/rb_woman"
-                        android:text="여성"
+                        android:text="@string/txt_join_form_sex_female"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"/>
@@ -156,7 +155,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="비밀번호"
+                    android:text="@string/txt_join_form_password"
                     android:textColor="#000000"
                     android:textSize="7pt"
                     android:textStyle="bold"
@@ -170,7 +169,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="3dp"
                     android:gravity="center"
-                    android:hint="비밀번호를 입력해주세요"
+                    android:hint="@string/txt_join_form_password_hint"
                     android:textColorHint="@color/gray5"
                     app:boxStrokeColor="@color/Mpuple5"
                     app:boxStrokeWidth="0dp"
@@ -193,7 +192,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="영문 대소문자, 숫자, 특수문자를 3가지 이상 조합하여 8자 이상으로 입력해 주세요"
+                    android:text="@string/txt_join_form_password_form"
                     android:textColor="#000000"
                     android:textSize="5pt"
                     android:fontFamily="@font/ddangs_light"
@@ -202,7 +201,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="비밀번호 확인"
+                    android:text="@string/txt_join_form_password2"
                     android:textColor="#000000"
                     android:textSize="7pt"
                     android:textStyle="bold"
@@ -216,7 +215,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginBottom="20dp"
                     android:gravity="center"
-                    android:hint="비밀번호를 확인해주세요"
+                    android:hint="@string/txt_join_form_password2_hint"
                     android:textColorHint="@color/gray5"
                     app:boxStrokeColor="@color/Mpuple5"
                     app:boxStrokeWidth="0dp"
@@ -241,7 +240,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="생년월일"
+                        android:text="@string/txt_join_form_birth"
                         android:textColor="#000000"
                         android:textSize="7pt"
                         android:fontFamily="@font/ddangs_bold"
@@ -254,7 +253,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:backgroundTint="#ffffff"
-                        android:text="클릭해주세요."
+                        android:text="@string/txt_join_form_birth_click"
                         android:textColor="#000000"
                         android:fontFamily="@font/ddangs_light"
                         android:textSize="12sp" />
@@ -266,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:buttonTint="@color/Mpuple5"
-                    android:text="전체동의"
+                    android:text="@string/txt_join_form_agree"
                     android:textSize="9pt"
                     android:textStyle="bold"
                     android:fontFamily="@font/ddangs_bold"
@@ -277,7 +276,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/Mpuple5"
-                    android:text="개인정보 수집 및 이용동의(필수)"
+                    android:text="@string/txt_join_form_agree_privacy1"
                     android:fontFamily="@font/ddangs_medium"
                     />
 
@@ -286,7 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/Mpuple5"
-                    android:text="서비스 이용약관 확인 및 동의(필수)"
+                    android:text="@string/txt_join_form_agree_privacy2"
                     android:fontFamily="@font/ddangs_medium"
                     />
 
@@ -295,7 +294,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/Mpuple5"
-                    android:text="마케팅 수신 동의(선택)"
+                    android:text="@string/txt_join_form_agree_privacy3"
                     android:fontFamily="@font/ddangs_medium"
                     />
 
@@ -309,13 +308,10 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp"
-
                     android:minWidth="0dp"
                     android:minHeight="0dp"
-
-                    android:background="@color/gray6"
-                    android:text="회원가입하기"
-                    android:textColor="@color/Mpuple6"
+                    android:background="#4AA8D8"
+                    android:text="@string/txt_join_form_confirm"
                     android:textSize="13pt"
                     android:textStyle="bold" />
 

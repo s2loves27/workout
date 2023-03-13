@@ -38,18 +38,18 @@ public class SplashActivity extends AppCompatActivity {
 
                 }
             } else if (response.code() == 400) {
-                Toast.makeText(getApplicationContext(), "발급 받은 토큰이 없습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_splash_token_error), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
 
             } else if (response.code() == 401) {
-                Toast.makeText(getApplicationContext(), "세션이 완료 되었습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_splash_session_error), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(getApplicationContext(), "DB에 문제가 있습니다 관리자에게 연락 부탁드립니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_splash_db_error), Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -77,7 +77,7 @@ public class SplashActivity extends AppCompatActivity {
             } else if (response.code() == 401) {
                 serverApiService.tokenRefresh(preferenceHelper.getRefresh()).enqueue(TokenRefreshCall);
             } else {
-                Toast.makeText(getApplicationContext(), "DB에 문제가 있습니다 관리자에게 연락 부탁드립니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_splash_db_error), Toast.LENGTH_SHORT).show();
             }
 //            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
         }
