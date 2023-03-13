@@ -54,7 +54,9 @@
         <activity android:name=".activaties.JoinActivity"
             android:windowSoftInputMode="stateAlwaysHidden"></activity>
 
-        <service android:name=".services.TimerService"></service>
+        <service
+            android:exported="true"
+            android:name=".services.TimerService"></service>
 
 
         <activity android:name=".activaties.SplashActivity"

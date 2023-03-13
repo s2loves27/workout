@@ -14,6 +14,7 @@ import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
+import com.example.workout.services.TimerService;
 import com.kakao.sdk.user.UserApiClient;
 
 import retrofit2.Call;
@@ -95,6 +96,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
         preferenceHelper = new PreferenceHelper(getApplicationContext());
         serverApiService = ServiceGenerator.createService(ServerApiService.class, "");
