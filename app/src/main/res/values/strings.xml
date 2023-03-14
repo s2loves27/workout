@@ -79,5 +79,8 @@
     <string name = "txt_splash_session_error">Session has expired. please log in again</string>
     <string name = "txt_splash_token_error">There is no issued token. Please log in again.</string>
 
+    <string name ="txt_battery_permission_title">permission is required</string>
+    <string name ="txt_battery_permission_body">For normal app use, you need permission to "exclude" the app from the "Optimize battery usage" list. After pressing the [OK] button, select [Allow] when the system notification dialog box appears.</string>
+    <string name ="txt_battery_permission_confirm">confirm</string>
 
 </resources>

@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.workout.R;
+
 public class BatteryPermissionDialog extends DialogFragment {
 
     public static BatteryPermissionDialog newInstance(){
@@ -22,8 +24,8 @@ public class BatteryPermissionDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        String title = "권한이 필요합니다";
-        String message = "정상적인 앱 사용을 위해 해당 어플을 \"배터리 사용량 최적화\" 목록에서 \"제외\"하는 권한이 필요합니다 \n\n [확인] 버튼을 누른 후 시스템 알림 대화 상자가 뜨면 [허용]을 선택해주세요";
+        String title = getString(R.string.txt_battery_permission_title);
+        String message = getString(R.string.txt_battery_permission_body);
         DialogInterface.OnClickListener clickListener = new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -35,7 +37,7 @@ public class BatteryPermissionDialog extends DialogFragment {
         };
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(message).setPositiveButton("확인", clickListener);
+        builder.setMessage(message).setPositiveButton(getString(R.string.txt_battery_permission_confirm), clickListener);
         return builder.create();
 
     }
