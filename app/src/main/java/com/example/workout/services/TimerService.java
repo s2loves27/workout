@@ -88,6 +88,10 @@ public class TimerService extends Service {
         @Override
         public void run() {
 
+            if(CalendarUtil.exerciseTimeModel.getmHour() == 3){
+                timerStop();
+            }
+
             Log.i("TEST", "시 : 분 : 초 " + "   " + CalendarUtil.exerciseTimeModel.getmHour() + " : " +
                     CalendarUtil.exerciseTimeModel.getmMin() + " : " +
                     CalendarUtil.exerciseTimeModel.getmSec());

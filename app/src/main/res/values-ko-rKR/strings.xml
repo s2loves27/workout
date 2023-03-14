@@ -87,6 +87,14 @@
     <string name ="txt_battery_permission_body">정상적인 앱 사용을 위해 해당 어플을 "배터리 사용량 최적화" 목록에서 "제외"하는 권한이 필요합니다 [확인] 버튼을 누른 후 시스템 알림 대화 상자가 뜨면 [허용]을 선택해주세요</string>
     <string name ="txt_battery_permission_confirm">확인</string>
 
+<!--    <string name="txt_ba"-->
+
+    <string name ="txt_dialog_battery_permission_title">배터리 최적화 설정</string>
+    <string name ="txt_dialog_battery_permission_body">배터리 최적화 설정을 하지 않으면 화면이 닫은 상태에서 시간이 기록 되지 않습니다.</string>
+    <string name ="txt_dialog_battery_permission_body2">다음 이미지를 확인하고, 배터리 최적화 설정을 해주세요.</string>
+
+    <string name ="txt_dialog_battery_permission_confirm">배터리 최적화 해제 설정하러 가기</string>
+    <string name ="txt_dialog_battery_permission_cancel">취소</string>
 
 
 </resources>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical"
+    android:background="#ffffff"
+
+    android:padding="10dp"
+
+    >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="배터리 최적화 설정"
+                android:textSize="35sp"
+                android:fontFamily="@font/ddangs_bold"
+                android:textColor="#000000"
+                android:gravity="center">
+
+            </TextView>
+
+            <TextView
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="배터리 최적화 설정을 하지 않으면 화면이 닫은 상태에서 시간이 기록 되지 않습니다."
+                android:textSize="20sp"
+                android:fontFamily="@font/ddangs_bold"
+                android:textColor="#111111"
+
+                android:gravity="center">
+
+            </TextView>
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="다음 이미지를 확인하고, 배터리 최적화 설정을 해주세요."
+                android:textSize="15sp"
+                android:fontFamily="@font/ddangs_bold"
+                android:textColor="#222222"
+
+                android:gravity="center">
+
+            </TextView>
+
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/img_battery_1"
+                android:layout_marginBottom="20dp">
+
+            </ImageView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+
+                android:src="@drawable/img_battery_2">
+
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp">
+
+                <TextView
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+
+                    android:background="@drawable/btn_oval_border_no"
+                    android:fontFamily="@font/ddangs_medium"
+                    android:gravity="center"
+                    android:text="@string/txt_dialog_battery_permission_cancel"
+                    android:textColor="#4267eb"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/btn_setting"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="20dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_weight="1"
+
+
+                    android:background="@drawable/btn_oval_yes"
+                    android:fontFamily="@font/ddangs_medium"
+                    android:gravity="center"
+                    android:text="@string/txt_dialog_battery_permission_confirm"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+
+
+    </ScrollView>
+
+
+</LinearLayout>

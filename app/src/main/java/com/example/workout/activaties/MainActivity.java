@@ -5,9 +5,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.app.AppOpsManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
@@ -23,6 +25,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.PowerManager;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -52,6 +55,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimerTask;
 
+import com.example.workout.dialogs.BatteryOptimizationPermissionDialog;
 import com.example.workout.dialogs.BatteryPermissionDialog;
 import com.example.workout.dialogs.RecodeAreaListDialog;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
@@ -95,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 //    private SelectTimerInsertDialog selectTimerInsertDialog;
 
     private RecodeAreaListDialog recodeAreaListDialog;
+
+    private BatteryOptimizationPermissionDialog batteryOptimizationPermissionDialog;
     PreferenceHelper preferenceHelper;
     ServerApiService serverApiService;
 
@@ -362,15 +368,62 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         spinner = findViewById(R.id.spinner);
 
+        batteryOptimizationPermissionDialog = new BatteryOptimizationPermissionDialog(this, new BatteryOptimizationPermissionDialog.BatteryOptimizationPermissionDialogClickListener(){
+
+            @Override
+            public void onCancelClick() {
+                if(batteryOptimizationPermissionDialog.isShowing()) {
+                    batteryOptimizationPermissionDialog.cancel();
+                }
+            }
+
+            @Override
+            public void onSettingClick() {
+                Intent intent =  new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                startActivity(intent);
+            }
+        });
+
+        batteryOptimizationPermissionDialog.setCancelable(true);
+        batteryOptimizationPermissionDialog.setCanceledOnTouchOutside(false);
+        batteryOptimizationPermissionDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        Window window = batteryOptimizationPermissionDialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
             if (powerManager.isIgnoringBatteryOptimizations(getPackageName()) == false) {
                 // 화이트 리스트 등록 안됨.
-                FragmentManager fm = getSupportFragmentManager();
+//                FragmentManager fm = getSupportFragmentManager();
+//
+//                BatteryPermissionDialog fragment = new BatteryPermissionDialog();
+//
+//                fragment.show(fm, "dialog");
 
-                BatteryPermissionDialog fragment = new BatteryPermissionDialog();
+//                AlertDialog.Builder setdialog = new AlertDialog.Builder(MainActivity.this);
+//                setdialog.setTitle("추가 설정이 필요합니다.")
+//                        .setMessage("어플을 문제없이 사용하기 위해서는 해당 어플을 \"배터리 사용량 최적화\" 목록에서 \"제외\"해야 합니다. 설정화면으로 이동하시겠습니까?")
+//                        .setPositiveButton("네", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Intent intent =  new Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+//                                startActivity(intent);
+//
+//                            }
+//                        })
+//                        .setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Toast.makeText(MainActivity.this, "설정을 취소했습니다.", Toast.LENGTH_SHORT).show();
+//                            }
+//                        })
+//                        .create()
+//                        .show();
 
-                fragment.show(fm, "dialog");
+                batteryOptimizationPermissionDialog.show();
 
             }
         }
@@ -411,16 +464,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         setMonthView();
 
 
-        int mHour = CalendarUtil.exerciseTimeModel.getmHour();
-        int mMin = CalendarUtil.exerciseTimeModel.getmMin();
-        int mSec = CalendarUtil.exerciseTimeModel.getmSec();
 
-        if (mHour == 0 && mMin == 0 && mSec == 0) {
-            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
-        } else {
-            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
 
-        }
 
 
         String dayOfFirstMonth = yearMonthDayFormDate(true);
@@ -504,6 +549,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 
 
+
+
 //        selectTimerInsertDialog = new SelectTimerInsertDialog(this, new SelectTimerInsertDialog.SelectTimerInsertDialogClickListener() {
 //            @Override
 //            public void onTimerClick() {
@@ -528,7 +575,26 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
     }
 
-    
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+
+        int mHour = CalendarUtil.exerciseTimeModel.getmHour();
+        int mMin = CalendarUtil.exerciseTimeModel.getmMin();
+        int mSec = CalendarUtil.exerciseTimeModel.getmSec();
+
+        if (mHour == 0 && mMin == 0 && mSec == 0) {
+            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_start));
+            spinner.setEnabled(true);
+        } else {
+            btnTimer.setText(getString(R.string.txt_select_time_insert_timer_end));
+            spinner.setEnabled(false);
+        }
+
+    }
+
     //서비스 시작
     private void setStartService(){
         startService(new Intent(MainActivity.this, TimerService.class));

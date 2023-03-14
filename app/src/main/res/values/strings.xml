@@ -83,4 +83,11 @@
     <string name ="txt_battery_permission_body">For normal app use, you need permission to "exclude" the app from the "Optimize battery usage" list. After pressing the [OK] button, select [Allow] when the system notification dialog box appears.</string>
     <string name ="txt_battery_permission_confirm">confirm</string>
 
+    <string name ="txt_dialog_battery_permission_title">Battery Optimization Settings</string>
+    <string name ="txt_dialog_battery_permission_body">Time will not be recorded while the screen is closed unless battery optimization settings are set.</string>
+    <string name ="txt_dialog_battery_permission_body2">Please check the following image and set battery optimization.</string>
+
+    <string name ="txt_dialog_battery_permission_confirm">Go to Battery Optimization Settings</string>
+    <string name ="txt_dialog_battery_permission_cancel">cancel</string>
+
 </resources>
