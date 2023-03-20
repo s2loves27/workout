@@ -29,6 +29,7 @@ public class RecodeAreaListDialog extends Dialog {
 
     ArrayList<ExerciseRecodeListItemModel> exerciseRecodeListItemModelList;
 
+
     Context context;
     public RecodeAreaListDialog(@NonNull Context context) {
         super(context);

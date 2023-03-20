@@ -33,11 +33,35 @@
         android:text="1h 20m 32s"
         android:textSize="20sp"
         android:textColor="#839acc"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:gravity="center"
         android:fontFamily="@font/ddangs_light">
     </TextView>
 
+    <RelativeLayout
+        android:id="@+id/btn_delete"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginRight="20dp"
 
+        android:focusable="false"
+        android:clickable="true"
+        android:background="@drawable/bg_circle_et"
+        >
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="4dp"
+            android:rotation="45"
+            android:background="#041a2a"
+            android:layout_centerInParent="true" />
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="20dp"
+            android:layout_centerInParent="true"
+            android:background="#041a2a"
+            android:rotation="45" />
+    </RelativeLayout>
 
 </LinearLayout>

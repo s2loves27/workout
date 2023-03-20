@@ -79,6 +79,14 @@ public interface ServerApiService {
             @Field("exercise_user_id") String exercise_user_id
     );
 
+    @FormUrlEncoded
+    @POST("v1/exercise/recode/delete/")
+    Call<String> exerciseRecodeDelete(
+            @Field("exercise_recode_id") String exercise_recode_id
+    );
+
+
+
 
 
 

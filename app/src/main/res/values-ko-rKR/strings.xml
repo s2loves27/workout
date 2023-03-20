@@ -74,6 +74,7 @@
     <string name = "txt_main_token_error">Token이 만료 되었습니다 다시 로그인 해주세요.</string>
     <string name = "txt_main_server_error">서버에러</string>
     <string name = "txt_main_save_complete">저장이 완료 되었습니다.</string>
+    <string name = "txt_main_delete_complete">삭제가 완료 되었습니다.</string>
 
     <string name = "txt_main_list_part">부위</string>
     <string name = "txt_main_list_time">시간</string>

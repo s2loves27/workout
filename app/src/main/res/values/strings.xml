@@ -71,6 +71,7 @@
     <string name = "txt_main_token_error">Token has expired. Please log in again.</string>
     <string name = "txt_main_server_error">Server Error</string>
     <string name = "txt_main_save_complete">Saving is complete.</string>
+    <string name = "txt_main_delete_complete">Deleting is complete.</string>
 
     <string name = "txt_main_list_part">Part</string>
     <string name = "txt_main_list_time">Time</string>

@@ -4,8 +4,8 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExerciseRecodeListItemModel {
 
-    @SerializedName("exercise_area_id")
-    private String exercise_area_id;
+    @SerializedName("exercise_recode_id")
+    private String exercise_recode_id;
 
     @SerializedName("exercies_recode_time")
     private int exercies_recode_time;
@@ -35,8 +35,8 @@ public class ExerciseRecodeListItemModel {
         return messages;
     }
 
-    public String getExercise_area_id() {
-        return exercise_area_id;
+    public String getExercise_recode_id() {
+        return exercise_recode_id;
     }
 
     public String getDetail() {
