@@ -5,6 +5,7 @@ import com.example.workout.models.ExerciseAreaModel;
 import com.example.workout.models.ExerciseRecodeListItemModel;
 import com.example.workout.models.ExerciseRecodeModel;
 import com.example.workout.models.ExerciseRecodeStatisticsModel;
+import com.example.workout.models.ExerciseRecodeUpdateCount;
 import com.example.workout.models.TokenCheckModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.models.UserModel;
@@ -63,14 +64,15 @@ public interface ServerApiService {
             @Field("exercise_user_id") String exercise_user_id,
             @Field("exercise_area_id") String exercise_area_id,
             @Field("exercise_recode_date") String exercise_recode_date,
-            @Field("exercise_recode_time") int exercise_recode_time);
+            @Field("exercise_recode_time") int exercise_recode_time,
+            @Field("updated_count") int updated_count);
 
     @FormUrlEncoded
     @POST("v1/exercise/recode/list/")
     Call<List<ExerciseRecodeListItemModel>> exerciseRecodeList(
             @Field("exercise_user_id") String exercise_user_id,
-            @Field("start_date") String start_date,
-            @Field("end_date") String end_date
+            @Field("updated_count") int updated_count
+
             );
 
     @FormUrlEncoded
@@ -85,7 +87,11 @@ public interface ServerApiService {
             @Field("exercise_recode_id") String exercise_recode_id
     );
 
-
+    @FormUrlEncoded
+    @POST("v1/exercise/recode/update-count/")
+    Call<ExerciseRecodeUpdateCount> exerciseRecodeUpdateCount(
+            @Field("exercise_user_id") String exercise_user_id
+    );
 
 
 

@@ -14,5 +14,6 @@ public class CalendarUtil {
 
     public static int iExerciseAreaItem;
 
+    public static int today;
 
 }

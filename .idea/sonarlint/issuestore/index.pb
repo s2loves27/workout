@@ -13,9 +13,5 @@ k
 ;app/src/main/java/com/example/workout/models/UserModel.java,1\f\1f4cb19febda46353175f2769b35cda6771234a4
 z
 Japp/src/main/java/com/example/workout/dialogs/SelectTimerInsertDialog.java,a\5\a50e29856e438b7f78c70d01ae6434813c268584
-s
-Capp/src/main/java/com/example/workout/restapi/ServerApiService.java,7\f\7f7b496aae139032ca530f8995859e8e4d8669c1
-s
-Capp/src/main/java/com/example/workout/restapi/ServiceGenerator.java,5\3\53e7220da4ef3162100fbad913b8d572e6ef11c7
 |
 Lapp/src/main/java/com/example/workout/restapi/AuthenticationInterceptor.java,2\d\2d4165d088ec36903bf4bb569e219231f07ea787

@@ -63,6 +63,12 @@
             android:enabled="true"
             android:name=".services.TimerService"></service>
 
+        <service
+
+            android:exported="true"
+            android:enabled="true"
+            android:name=".services.ApiService"></service>
+
 
         <activity android:name=".activaties.SplashActivity"
             android:exported="true">

@@ -70,6 +70,7 @@ import com.example.workout.models.ExerciseRecodeStatisticsModel;
 import com.example.workout.models.TokenModel;
 import com.example.workout.restapi.ServerApiService;
 import com.example.workout.restapi.ServiceGenerator;
+import com.example.workout.services.ApiService;
 import com.example.workout.services.TimerService;
 import com.example.workout.utils.CalendarUtil;
 import com.example.workout.utils.Util;
@@ -112,174 +113,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     HashMap<String, String> exerciseArea;
 
 
-//    private final Callback<List<ExerciseRecodeListItemModel>> exerciseRecodeListCall = new Callback<List<ExerciseRecodeListItemModel>>() {
-//        @Override
-//        public void onResponse(Call<List<ExerciseRecodeListItemModel>> call, Response<List<ExerciseRecodeListItemModel>> response) {
-//            if (response.isSuccessful()) {
-//                List<ExerciseRecodeListItemModel> result = response.body();
-//                if (result != null) {
-//
-//                    for (int i = 0; i < dayList.size(); i++) {
-//                        dayList.get(i).getExerciseRecodeListItemModel().clear();
-//                    }
-//                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-////                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
-//                    for (int i = 0; i < result.size(); i++) {
-//                        CalendarStructureModel structureModel = new CalendarStructureModel();
-//                        ExerciseRecodeListItemModel exerciseRecodeListItemModel = result.get(i);
-//                        String exerciseRecodeDate = exerciseRecodeListItemModel.getExercies_recode_date();
-//
-//                        for (int j = 0; j < dayList.size(); j++) {
-//                            String date = sdf.format(dayList.get(j).getDate());
-//
-//                            if (date.equals(exerciseRecodeDate)) {
-//                                dayList.get(j).getExerciseRecodeListItemModel().add(exerciseRecodeListItemModel);
-//                            }
-//                        }
-////                        exerciseRecodeDate.equals()
-//                    }
-//
-//                    CalendarAdapter adapter = new CalendarAdapter(dayList, getApplicationContext(), MainActivity.this);
-//
-//                    //레이아웃 설정 (열 7개)
-//                    RecyclerView.LayoutManager manager = new GridLayoutManager(getApplicationContext(), 7);
-//
-//                    recyclerView.setLayoutManager(manager);
-//
-//                    recyclerView.setAdapter(adapter);
-//
-//
-//                }
-//            } else if (response.code() == 400) {
-//                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
-//                finish();
-//            } else {
-//                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
-//
-//                finish();
-//            }
-////            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        @Override
-//        public void onFailure(Call<List<ExerciseRecodeListItemModel>> call, Throwable t) {
-//            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
-//            t.printStackTrace();
-//        }
-//    };
-
-    private final Callback<ExerciseRecodeStatisticsModel> exerciseRecodeStatisticsCall = new Callback<ExerciseRecodeStatisticsModel>() {
-        @Override
-        public void onResponse(Call<ExerciseRecodeStatisticsModel> call, Response<ExerciseRecodeStatisticsModel> response) {
-            if (response.isSuccessful()) {
-                ExerciseRecodeStatisticsModel result = response.body();
-                if (result != null) {
-//                    Toast.makeText(getApplicationContext(), "저장이 완료 되었습니다.", Toast.LENGTH_SHORT).show();
-                    int iThisMonth = result.getThis_month();
-                    int iLastMonth = result.getLast_month();
-                    int iLastMonthDay = result.getLast_month_day();
-
-                    int iThisMonthHour = iThisMonth / 3600;
-                    int iThisMonthMinute = iThisMonth / 60;
-                    int iThisMonthSecond = iThisMonth % 60;
-
-                    String strThisMonth = "";
-                    if (iThisMonthHour > 0) strThisMonth += iThisMonthHour + "h ";
-                    if (iThisMonthMinute > 0) strThisMonth += iThisMonthMinute + "m ";
-                    if (iThisMonthSecond > 0) strThisMonth += iThisMonthSecond + "s";
-
-                    int iLastMonthHour = iLastMonth / 3600;
-                    int iLastMonthMinute = iLastMonth / 60;
-                    int iLastMonthSecond = iLastMonth % 60;
-
-                    String strLastMonth = "";
-                    if (iLastMonthHour > 0) strLastMonth += iLastMonthHour + "h ";
-                    if (iLastMonthMinute > 0) strLastMonth += iLastMonthMinute + "m ";
-                    if (iLastMonthSecond > 0) strLastMonth += iLastMonthSecond + "s";
-
-
-                    int iLastDayMonthHour = iLastMonthDay / 3600;
-                    int iLastDayMonthMinute = iLastMonthDay / 60;
-                    int iLastDayMonthSecond = iLastMonthDay % 60;
-
-                    String strLastDayMonth = "";
-                    if (iLastDayMonthHour > 0) strLastDayMonth += iLastDayMonthHour + "h ";
-                    if (iLastDayMonthMinute > 0) strLastDayMonth += iLastDayMonthMinute + "m ";
-                    if (iLastDayMonthSecond > 0) strLastDayMonth += iLastDayMonthSecond + "s";
-
-
-                    txtThisMonth.setText(strThisMonth);
-                    txtLastMonth.setText(strLastDayMonth);
-                    txtLastMonthAll.setText(strLastMonth);
-
-
-                    String dayOfFirstMonth = yearMonthDayFormDate(true);
-                    String dayOfLastMonth = yearMonthDayFormDate(false);
-
-//                    serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth, dayOfLastMonth).enqueue(exerciseRecodeListCall);
-                    getRecodeList();
-                }
-            } else if (response.code() == 400) {
-                ExerciseRecodeStatisticsModel result = response.body();
-                if (result != null) {
-                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
-                }
-                finish();
-            } else {
-                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
-                finish();
-
-            }
-//            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onFailure(Call<ExerciseRecodeStatisticsModel> call, Throwable t) {
-            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
-            t.printStackTrace();
-        }
-    };
 
 
 
 
-//    private final Callback<ExerciseRecodeModel> exerciseRecodeCall = new Callback<ExerciseRecodeModel>() {
-//        @Override
-//        public void onResponse(Call<ExerciseRecodeModel> call, Response<ExerciseRecodeModel> response) {
-//            if (response.isSuccessful()) {
-//                ExerciseRecodeModel result = response.body();
-//                if (result != null) {
-//                    Toast.makeText(getApplicationContext(), getString(R.string.txt_main_save_complete), Toast.LENGTH_SHORT).show();
-//
-//                    String dayOfFirstMonth = yearMonthDayFormDate(true);
-//                    String dayOfLastMonth = yearMonthDayFormDate(false);
-//
-////                    serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth, dayOfLastMonth).enqueue(exerciseRecodeListCall);
-//                        getRecodeList();
-//                }
-//            } else if (response.code() == 400) {
-//                ExerciseRecodeModel result = response.body();
-//                if (result != null) {
-//                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server), Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
-//                }
-//                finish();
-//            } else {
-//                Toast.makeText(getApplicationContext(), getString(R.string.txt_main_token_error), Toast.LENGTH_SHORT).show();
-//                finish();
-//            }
-////            Toast.makeText(MainActivity.this, "인터넷 연결 오류", Toast.LENGTH_SHORT).show();
-//        }
-//
-//        @Override
-//        public void onFailure(Call<ExerciseRecodeModel> call, Throwable t) {
-//            Toast.makeText(MainActivity.this, getString(R.string.txt_error_internet), Toast.LENGTH_SHORT).show();
-//            t.printStackTrace();
-//        }
-//    };
+
 
 
     private final Callback<List<ExerciseAreaModel>> exerciseAreaListCall = new Callback<List<ExerciseAreaModel>>() {
@@ -448,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         //변수 초기화
         CalendarUtil.selectedDate = Calendar.getInstance();
-
+        CalendarUtil.today = CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH);
 
         setStartService();
 
@@ -480,8 +318,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 //        serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), dayOfFirstMonth , dayOfLastMonth).enqueue(exerciseRecodeListCall);
 
+        Log.i("TEST", preferenceHelper.getToken());
+
         serverApiService.exerciseArea().enqueue(exerciseAreaListCall);
-        serverApiService.exerciseRecodeStatistics(preferenceHelper.getUserId()).enqueue(exerciseRecodeStatisticsCall);
 
 
         Log.i("TEST", "USERID" + preferenceHelper.getUserId());
@@ -491,9 +330,14 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
                     CalendarUtil.selectedDate.add(Calendar.MONTH, -1);
+                    if(CalendarUtil.today >= CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
+                        CalendarUtil.selectedDate.set(Calendar.DAY_OF_MONTH, CalendarUtil.selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+                    }
+
+                    setMonthView();
                 }
-                setMonthView();
             }
         });
 
@@ -501,8 +345,11 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             @Override
             public void onClick(View view) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    CalendarUtil.selectedDate.add(Calendar.MONTH, 1);
 
+                    CalendarUtil.selectedDate.add(Calendar.MONTH, 1);
+                    if(CalendarUtil.today >= CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
+                        CalendarUtil.selectedDate.set(Calendar.DAY_OF_MONTH, CalendarUtil.selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH));
+                    }
                 }
                 setMonthView();
             }
@@ -544,11 +391,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
 //                        serverApiService.exerciseRecode(preferenceHelper.getUserId(), exerciseArea.get((String) spinner.getSelectedItem()), getDate, time).enqueue(exerciseRecodeCall);
                         DBManager dbManager = new DBManager(getApplicationContext());
-                        int updated_count = dbManager.open().getUpdateCount();
+                        int updated_count = dbManager.open().getUpdateCount()+1;
 
 
                         dbManager.open().
-                                insert(time, getDate, exerciseArea.get((String) spinner.getSelectedItem()), (String) spinner.getSelectedItem(),
+                                insert(time, getDate, exerciseArea.get((String) spinner.getSelectedItem()),
+                                        (String) spinner.getSelectedItem(),
                                         "N", updated_count);
 
                         getRecodeList();
@@ -593,6 +441,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         super.onResume();
 
 
+
         getRecodeList();
 
 
@@ -613,6 +462,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     //서비스 시작
     private void setStartService(){
         startService(new Intent(MainActivity.this, TimerService.class));
+        startService(new Intent(MainActivity.this, ApiService.class));
+
         bindService(new Intent(this, TimerService.class), mConnection, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
@@ -677,6 +528,10 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
 
         Calendar monthCalendar = (Calendar) CalendarUtil.selectedDate.clone();
 
+        int currentDay = CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH);
+
+        Log.i("TEST","currentDay:" + currentDay);
+
         //1일로 세팅
         monthCalendar.set(Calendar.DAY_OF_MONTH, 1);
 
@@ -739,6 +594,12 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
             CalendarStructureModel structureModel = new CalendarStructureModel();
             ExerciseRecodeListItemModel exerciseRecodeListItemModel = exerciseRecodeListItemModels.get(i);
             String exerciseRecodeDate = exerciseRecodeListItemModel.getExercies_recode_date();
+
+            Log.i("TEST", exerciseRecodeListItemModel.getDelete_yn());
+            Log.i("TEST", exerciseRecodeListItemModel.getExercise_area_id());
+            Log.i("TEST", ""+exerciseRecodeListItemModel.getExercies_recode_time());
+            Log.i("TEST", ""+exerciseRecodeListItemModel.getExercise_area_name());
+            Log.i("TEST", ""+exerciseRecodeListItemModel.getUpdated_count());
 
             for(int j = 0 ; j < dayList.size() ; j ++){
                 String date = sdf.format(dayList.get(j).getDate());
@@ -947,6 +808,23 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         }
 
         return granted;
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        processCommand(intent);
+        super.onNewIntent(intent);
+    }
+    private void processCommand(Intent intent) {
+        if (intent != null) {
+            String update = intent.getStringExtra("update");
+
+            if(update != null){
+                if (update == "1" || update.equals("1")) {
+                    getRecodeList();
+                }
+            }
+        }
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.workout.adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,6 +81,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
         int displayDay = dateCalendar.get(Calendar.DAY_OF_MONTH);
         int displayMonth = dateCalendar.get(Calendar.MONTH) + 1;
         int displayYear = dateCalendar.get(Calendar.YEAR);
+
+
 
         if(displayMonth == currentMonth && displayYear == currentYear){
             if(currentDay == displayDay){

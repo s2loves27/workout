@@ -205,7 +205,7 @@ public class DBManager {
         };
         String[] selectionArgs = new String[]{String.valueOf(updated_date), "N"};
 
-        Cursor cursor = database.query(DatabaseHelper.EXERCISE_RECODE_TABLE, columns, DatabaseHelper.UPDATED_DATE + " > ? AND " + DatabaseHelper.DELETE_YN + " = ?" , selectionArgs, null, null, null);
+        Cursor cursor = database.query(DatabaseHelper.EXERCISE_RECODE_TABLE, columns, DatabaseHelper.UPDATED_DATE + " > ? AND " + DatabaseHelper.DELETE_YN + " = ?" , selectionArgs, null, null, DatabaseHelper.UPDATED_COUNT + " ASC");
 
         if(cursor.moveToFirst()){
             while(!cursor.isAfterLast()){
@@ -227,14 +227,15 @@ public class DBManager {
     }
 
 
-    public int getUpdateCount(){
-        String query = "select max(updated_count) as max_updated_count from " + DatabaseHelper.EXERCISE_RECODE_TABLE;
+    public int getUpdateCount() {
+        String query = "select max(" + DatabaseHelper.UPDATED_COUNT + ") as max_updated_count from " + DatabaseHelper.EXERCISE_RECODE_TABLE;
 
         Cursor cursor = database.rawQuery(query, null);
         int max_updated_count = 0;
-        if(cursor.moveToNext())
-            max_updated_count = cursor.getInt(0);
+        if (cursor.moveToNext()) {
 
+            max_updated_count = cursor.getInt(0);
+        }
 
 
         cursor.close();

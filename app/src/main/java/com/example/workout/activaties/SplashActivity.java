@@ -2,6 +2,7 @@ package com.example.workout.activaties;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -67,6 +68,7 @@ public class SplashActivity extends AppCompatActivity {
             if (response.isSuccessful()) {
                 TokenCheckModel result = response.body();
                 if (result != null) {
+
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
