@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.workout.R;
 import com.example.workout.activaties.MainActivity;
+import com.example.workout.database.DBManager;
 import com.example.workout.dialogs.SelectTimerInsertDialog;
 import com.example.workout.managers.PreferenceHelper;
 import com.example.workout.models.CalendarStructureModel;
@@ -143,9 +144,17 @@ public class RecodeAreaAdapter extends RecyclerView.Adapter<RecodeAreaAdapter.Ca
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentPosition = position;
-                Log.i("TEST", "exerciseRecodeListItemModel.getExercise_recode_id() : " + exerciseRecodeListItemModel.getExercise_recode_id());
-                serverApiService.exerciseRecodeDelete(exerciseRecodeListItemModel.getExercise_recode_id()).enqueue(exerciseRecodeDeleteCall);
+//                currentPosition = position;
+//                Log.i("TEST", "exerciseRecodeListItemModel.getExercise_recode_id() : " + exerciseRecodeListItemModel.getExercise_recode_id());
+//                serverApiService.exerciseRecodeDelete(exerciseRecodeListItemModel.getExercise_recode_id()).enqueue(exerciseRecodeDeleteCall);
+                DBManager dbManager = new DBManager(context);
+                int updated_count = dbManager.open().getUpdateCount();
+                dbManager.open().
+                        delete(exerciseRecodeListItemModel.getExercise_area_id(), exerciseRecodeListItemModel.getExercies_recode_date());
+
+                dayList = dbManager.open().fetch_date(exerciseRecodeListItemModel.getExercies_recode_date());
+
+                notifyDataSetChanged();
 
             }
         });
@@ -178,6 +187,9 @@ public class RecodeAreaAdapter extends RecyclerView.Adapter<RecodeAreaAdapter.Ca
             btnDelete = itemView.findViewById(R.id.btn_delete);
 
         }
+
+
+
     }
 
     public void deleteItem(int position){

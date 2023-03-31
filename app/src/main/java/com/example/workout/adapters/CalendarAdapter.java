@@ -132,7 +132,6 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.Calend
             @Override
             public void onClick(View view) {
 
-
                 onItemListener.onItemClick(calendarStructureModel);
             }
         });

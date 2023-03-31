@@ -22,6 +22,7 @@ public class ExerciseRecodeModel {
     @SerializedName("detail")
     private String detail;
 
+
     @SerializedName("messages")
     private TokenMessageModel messages;
 

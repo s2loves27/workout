@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class ExerciseRecodeStatisticsModel {
 
+    public ExerciseRecodeStatisticsModel(int this_month , int last_month, int last_month_day){
+        this.this_month = this_month;
+        this.last_month = last_month;
+        this.last_month_day = last_month_day;
+    }
+
     @SerializedName("this_month")
     private int this_month;
 

@@ -2,6 +2,8 @@ package com.example.workout.utils;
 
 import android.content.Context;
 
+import com.example.workout.database.DBManager;
+
 public class  Util {
 
     public static String getMonth(int month){
@@ -23,4 +25,20 @@ public class  Util {
     public static String getLocale(Context context) {
         return context.getResources().getConfiguration().locale.getLanguage();
     }
+
+//    public static void dbInset(Context context){
+////        StringBuilder err = new StringBuilder();
+////        for (int i = 0; i < t.getStackTrace().length; i++) {
+////            err.append(t.getStackTrace()[i].toString()).append("\n");
+////        }
+////        err.append(t.getMessage()).append("\n");
+////        err.append(t.toString()).append("\n");
+//
+////        err.append(getActivityName(context)).append("\n");
+//
+//
+//        new DBManager(context).open().insert();
+//    }
+
+
 }

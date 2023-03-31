@@ -61,10 +61,12 @@ public class RecodeAreaListDialog extends Dialog {
         recyclerView.setAdapter(adapter);
 
 
+    }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
 
 
     }
-
-
 }
