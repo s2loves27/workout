@@ -41,6 +41,8 @@ public class ApiService  extends Service {
     ServerApiService serverApiService;
     PreferenceHelper preferenceHelper;
 
+
+
     int apiCount = 0;
 
 
@@ -153,7 +155,7 @@ public class ApiService  extends Service {
 
 
                         ArrayList<ExerciseRecodeListItemModel> exerciseRecodeListItemModels =
-                                dbManager.open().fetch(maxUpdatedCount);
+                                dbManager.open().fetch_update_local(maxUpdatedCount);
 
                         ExerciseRecodeListItemModel exerciseRecodeListItemModel
                                 = exerciseRecodeListItemModels.get(0);

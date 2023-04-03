@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     TextView txtLastMonth;
     TextView txtLastMonthAll;
 
+    TextView txtMainLogout;
+
     private Handler handler;
 
 
@@ -207,6 +209,9 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
         txtThisMonth = findViewById(R.id.txt_this_month);
         txtLastMonth = findViewById(R.id.txt_last_month);
         txtLastMonthAll = findViewById(R.id.txt_last_month_all);
+
+        txtMainLogout = findViewById(R.id.txt_main_logout);
+
 
         spinner = findViewById(R.id.spinner);
 
@@ -340,6 +345,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 }
             }
         });
+
+
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

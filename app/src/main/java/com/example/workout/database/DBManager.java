@@ -143,6 +143,39 @@ public class DBManager {
 
     }
 
+    public ArrayList<ExerciseRecodeListItemModel> fetch_update_local(int updated_count){
+        ArrayList<ExerciseRecodeListItemModel> list = new ArrayList<>();
+
+        String[] columns = new String[]{
+                DatabaseHelper.EXERCISE_RECODE_TIME, DatabaseHelper.EXERCISE_RECODE_DATE,
+                DatabaseHelper.CREATE_DATE, DatabaseHelper.UPDATED_DATE, DatabaseHelper.EXERCISE_AREA_ID,
+                DatabaseHelper.DELETE_YN, DatabaseHelper.UPDATED_COUNT, DatabaseHelper.EXERCISE_AREA_NAME,
+
+
+        };
+        String[] selectionArgs = new String[]{String.valueOf(updated_count)};
+
+        Cursor cursor = database.query(DatabaseHelper.EXERCISE_RECODE_TABLE, columns, DatabaseHelper.UPDATED_COUNT + " > ? " , selectionArgs, null, null, null);
+
+        if(cursor.moveToFirst()){
+            while(!cursor.isAfterLast()){
+                ExerciseRecodeListItemModel exerciseRecodeListItemModel =
+                        new ExerciseRecodeListItemModel(cursor.getInt(0), cursor.getString(1), cursor.getString(4),
+                                cursor.getString(7), cursor.getString(5),
+                                cursor.getInt(6));
+
+                list.add(exerciseRecodeListItemModel);
+                cursor.moveToNext();
+
+            }
+
+        }
+
+        close();
+        return list;
+
+    }
+
     public ExerciseRecodeStatisticsModel statistics(String strThisMonthToday, String strThisMonthFirstDay,
                                                                String strThisMonthLastDay, String strLastMonthToday,
                                                                String strLastMonthFirstDay, String strLastMonthLastDay){
