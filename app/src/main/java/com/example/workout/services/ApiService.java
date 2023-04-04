@@ -43,7 +43,7 @@ public class ApiService  extends Service {
 
 
 
-    int apiCount = 0;
+    int apiCount = 1;
 
 
         private final Callback<List<ExerciseRecodeListItemModel>> exerciseRecodeListCall = new Callback<List<ExerciseRecodeListItemModel>>() {
@@ -225,7 +225,7 @@ public class ApiService  extends Service {
 
             serverApiService.exerciseRecodeUpdateCount(preferenceHelper.getUserId()).enqueue(exerciseRecodeUpdateCountCallback);
 
-            if(apiCount%60 == 0){
+            if(apiCount % 60 == 0){
                 serverApiService.exerciseRecodeList(preferenceHelper.getUserId(), -1).enqueue(exerciseRecodeListCall);
             }
 

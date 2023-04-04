@@ -19,6 +19,11 @@ public class TokenModel {
     @SerializedName("user")
     private String user;
 
+    @SerializedName("user_id")
+    private String userId;
+
+
+
     public String getAccess() {
         return access;
     }
@@ -37,5 +42,9 @@ public class TokenModel {
 
     public String getUser() {
         return user;
+    }
+
+    public String getUserId() {
+        return userId;
     }
 }

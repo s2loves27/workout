@@ -89,7 +89,10 @@ public class JoinActivity extends AppCompatActivity {
 
             } else if(response.code() == 400){
                 Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_value), Toast.LENGTH_SHORT).show();
-            } else{
+            } else if(response.code() == 409){
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_exists), Toast.LENGTH_SHORT).show();
+            }
+            else{
                 Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_nocomplete), Toast.LENGTH_SHORT).show();
             }
 

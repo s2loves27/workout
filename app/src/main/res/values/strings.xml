@@ -18,6 +18,8 @@
     <string name = "txt_join_error_nocomplete">You have not registered as a member. Please check.</string>
     <string name = "txt_join_error_400">400 communication error</string>
     <string name = "txt_join_error_server">server error.</string>
+    <string name = "txt_join_error_exists">This ID already exists.</string>
+
 
     <string name = "txt_join_insert_email">Please enter your e-mail</string>
     <string name = "txt_join_nomatch_email">Email format is incorrect.</string>

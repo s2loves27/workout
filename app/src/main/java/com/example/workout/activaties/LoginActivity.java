@@ -87,16 +87,16 @@ public class LoginActivity extends AppCompatActivity {
             }else if(response.code() == 400){
                 TokenModel result = response.body();
                 if(result != null){
-                    Toast.makeText(getApplicationContext(), result.getMessage() + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400) + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_400), Toast.LENGTH_SHORT).show();
                 }
             }else if(response.code() == 500){
-                Toast.makeText(getApplicationContext(), getString(R.string.txt_login_not_member) + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_login_not_member), Toast.LENGTH_SHORT).show();
             }
             else{
-                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server) + response.code(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), getString(R.string.txt_join_error_server) , Toast.LENGTH_SHORT).show();
             }
 
             Intent intent = new Intent(LoginActivity.this, JoinActivity.class);
@@ -136,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         preferenceHelper.setToken(result.getAccess());
                         preferenceHelper.setRefresh(result.getRefresh());
-                        preferenceHelper.setUserId(result.getUser());
+                        preferenceHelper.setUserId(result.getUserId());
 
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);

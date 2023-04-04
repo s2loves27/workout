@@ -18,7 +18,9 @@
 
     <string name = "txt_join_error_value">잘못된 값이 입력 되었습니다. 확인해주세요.</string>
     <string name = "txt_join_error_nocomplete">회원 가입이 되지 않았습니다. 확인해주세요.</string>
+    <string name = "txt_join_error_exists">이미 존재 하는 ID 입니다.</string>
     <string name = "txt_join_error_400">400 통신에러.</string>
+
     <string name = "txt_join_error_server">서버에러.</string>
 
     <string name = "txt_join_insert_email">이메일을 입력해주세요.</string>
