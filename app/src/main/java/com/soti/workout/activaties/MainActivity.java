@@ -1,6 +1,7 @@
 package com.soti.workout.activaties;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -175,6 +176,8 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         setContentView(R.layout.activity_main);
 
 
@@ -323,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                     CalendarUtil.selectedDate.add(Calendar.MONTH, -1);
-                    if(CalendarUtil.today >= CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
+                    if(CalendarUtil.today > CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
                         CalendarUtil.selectedDate.set(Calendar.DAY_OF_MONTH, CalendarUtil.selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH));
                     }
 
@@ -340,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements CalendarAdapter.O
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
                     CalendarUtil.selectedDate.add(Calendar.MONTH, 1);
-                    if(CalendarUtil.today >= CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
+                    if(CalendarUtil.today > CalendarUtil.selectedDate.get(Calendar.DAY_OF_MONTH)) {
                         CalendarUtil.selectedDate.set(Calendar.DAY_OF_MONTH, CalendarUtil.selectedDate.getActualMaximum(Calendar.DAY_OF_MONTH));
                     }
                 }

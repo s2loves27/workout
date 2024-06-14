@@ -11,6 +11,7 @@
 
     <string name="txt_pre_sign_up">회원가입</string>
     <string name="txt_pre_sign_in">로그인</string>
+    <string name="txt_pre_sign_in_kakao">카카오 로그인</string>
 
     <string name="txt_error_internet">인터넷 연결 오류</string>
 
@@ -99,5 +100,8 @@
     <string name ="txt_dialog_battery_permission_confirm">배터리 최적화 해제 설정하러 가기</string>
     <string name ="txt_dialog_battery_permission_cancel">취소</string>
 
+
+    <string name = "txt_server_error_400">잘못된 요청 구문입니다. 관리자에게 연락 부탁드립니다.</string>
+    <string name = "txt_server_error_401">서버의 상태가 이상 합니다. 관리자에게 연락 부탁드립니다.</string>
 
 </resources>

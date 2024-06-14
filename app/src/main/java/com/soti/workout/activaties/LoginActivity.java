@@ -25,6 +25,7 @@ import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -123,20 +124,16 @@ public class LoginActivity extends AppCompatActivity {
                 TokenModel result = response.body();
                 if (result != null) {
                     int code = result.getCode();
-                    if(code == 1) {
 
-                        Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), result.getMessage(), Toast.LENGTH_SHORT).show();
 
-                        preferenceHelper.setToken(result.getAccess());
-                        preferenceHelper.setRefresh(result.getRefresh());
-                        preferenceHelper.setUserId(result.getUserId());
+                    preferenceHelper.setToken(result.getAccess());
+                    preferenceHelper.setRefresh(result.getRefresh());
+                    preferenceHelper.setUserId(result.getUserId());
 
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }else{
-                        Toast.makeText(getApplicationContext(), result.toString(), Toast.LENGTH_SHORT).show();
-                    }
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+
                 }
             }else if(response.code() == 400){
                 TokenModel result = response.body();
@@ -163,6 +160,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         setContentView(R.layout.activity_login);
 
         Log.d("KeyHash", getKeyHash());

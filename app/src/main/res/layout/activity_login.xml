@@ -4,9 +4,9 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:layout_marginLeft="15dp"
     android:layout_marginRight="15dp"
+    android:orientation="vertical"
 
     >
 
@@ -14,12 +14,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
         android:layout_marginTop="30dp"
+        android:layout_weight="1.5"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:src="@drawable/calendar_main">
@@ -29,15 +29,14 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
             android:layout_marginTop="25dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/ddangs_medium"
+            android:gravity="center"
             android:text="@string/app_name"
-            android:fontFamily="@font/ddangs_bold"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="25sp"
-            android:gravity="center"
-            >
+            android:textSize="40sp">
 
         </TextView>
     </LinearLayout>
@@ -51,17 +50,17 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:boxStrokeColor = "@color/Mpuple5"
-            app:boxStrokeWidthFocused = "1dp"
-            app:boxStrokeWidth = "0.5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="10dp"
             android:gravity="center"
-            android:textColorHint="@color/gray5"
             android:hint="@string/txt_join_form_email_hint"
+            android:textColorHint="@color/gray5"
+            app:boxStrokeColor="@color/Mpuple5"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp"
 
             >
 
@@ -69,8 +68,8 @@
                 android:id="@+id/login_edit_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="13dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:padding="13dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -79,22 +78,22 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:boxStrokeColor = "@color/Mpuple5"
-            app:boxStrokeWidthFocused = "1dp"
-            app:boxStrokeWidth = "0.5dp"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
             android:layout_marginBottom="20dp"
+            android:hint="@string/txt_join_form_password_hint"
             android:textColorHint="@color/gray5"
-            android:hint="@string/txt_join_form_password_hint">
+            app:boxStrokeColor="@color/Mpuple5"
+            app:boxStrokeWidth="0.5dp"
+            app:boxStrokeWidthFocused="1dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/login_edit_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:padding="13dp"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:padding="13dp" />
 
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -105,8 +104,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="40dp"
-            android:checked="true"
             android:buttonTint="@color/Mpuple5"
+            android:checked="true"
             android:text="@string/txt_login_form_keep" />
 
 
@@ -115,10 +114,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        android:layout_weight="1"
         android:layout_marginBottom="40dp"
-        >
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txt_login_sign_in"
@@ -128,18 +126,18 @@
             android:layout_marginTop="20dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="10dp"
-            android:includeFontPadding="false"
-
-
             android:layout_weight="1"
+
+
             android:background="@drawable/btn_login"
-            android:fontFamily="@font/ddangs_bold"
+            android:fontFamily="@font/ddangs_medium"
             android:gravity="center"
+            android:includeFontPadding="false"
 
             android:text="@string/txt_pre_sign_in"
             android:textAlignment="center"
             android:textColor="@color/black"
-            android:textSize="20sp">
+            android:textSize="15sp">
 
         </TextView>
 
@@ -147,36 +145,48 @@
             android:id="@+id/txt_login_join"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:includeFontPadding="false"
-            android:gravity="center"
-
-            android:layout_marginBottom="10dp"
-
-            android:minWidth="0dp"
-            android:minHeight="0dp"
-
-            android:background="@drawable/btn_register"
-
-
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
+
+            android:layout_weight="1"
+
+            android:background="@drawable/btn_register"
+            android:fontFamily="@font/ddangs_medium"
+
+            android:gravity="center"
+
+
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
             android:text="@string/txt_pre_sign_up"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:fontFamily="@font/ddangs_light"
 
             />
 
-        <ImageView
+        <TextView
             android:id="@+id/iv_login_kako"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="10dp"
             android:layout_weight="1"
-            android:src="@drawable/kakao_login_large_wide"
-            >
+            android:background="@color/kakao"
+            android:fontFamily="@font/ddangs_medium"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:text="@string/txt_pre_sign_in_kakao"
+            android:textColor="@color/black"
+            android:textSize="15sp"
 
-        </ImageView>
+            />
+
+
 
     </LinearLayout>
 

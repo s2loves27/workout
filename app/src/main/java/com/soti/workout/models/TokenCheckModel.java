@@ -8,7 +8,7 @@ public class TokenCheckModel {
     String detail;
 
     @SerializedName("code")
-    String code;
+    int code;
 
     @SerializedName("access")
     String access;
@@ -17,7 +17,7 @@ public class TokenCheckModel {
         return access;
     }
 
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 

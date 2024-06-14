@@ -20,27 +20,35 @@ import retrofit2.http.POST;
 
 public interface ServerApiService {
 
-    public static final String BASE_URL = "http://softsoti.com:18000/api/";
+    public static final String BASE_URL = "https://sotiapi.com/exercise/";
 
 
     ///// 유저 관련 API /////
+//    PHP 전환 완료
+    @FormUrlEncoded
+    @POST("v1/accounts/token-check.php")
+    Call<TokenCheckModel> tokenCheck(@Field("token") String token);
 
     @FormUrlEncoded
-    @POST("v1/accounts/register/")
+    @POST("v1/accounts/register.php")
     Call<UserModel> register(@Field("email") String email, @Field("date_of_birth") String date_of_birth, @Field("password") String password, @Field("password2") String password2, @Field("sex") String sex,
-    @Field("username") String username);
+                             @Field("username") String username);
 
     @FormUrlEncoded
-    @POST("v1/accounts/login/")
+    @POST("v1/accounts/login.php")
     Call<TokenModel> login(@Field("email") String email, @Field("password") String password);
+
+    //
+
+
+
+
 
     @FormUrlEncoded
     @POST("v1/accounts/kakao-login/")
     Call<TokenModel> kakaoLogin(@Field("email") String email);
 
-    @FormUrlEncoded
-    @POST("v1/accounts/token-check/")
-    Call<TokenCheckModel> tokenCheck(@Field("token") String token);
+
 
     @FormUrlEncoded
     @POST("v1/accounts/token-refresh/")
